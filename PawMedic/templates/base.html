@@ -6,10 +6,19 @@
     <title>PawMedic</title>
     {% tailwind_css %}
 </head>
-<body class="bg-gray-100">
-    <div class="mx-0 w-full h-full">
+<body class="flex flex-col bg-gray-100 min-h-screen">
+    <nav class="flex flex-row bg-green-300 p-6">
+
+    </nav>
+    <main class="flex-grow">
         {% block content %}
         {% endblock %}
-    </div>
+    </main>
+
+    <footer class="bg-green-300 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-4 text-center text-gray-600">
+            <p>&copy; 2026 PawMedic</p>
+        </div>
+    </footer>
 </body>
 </html>

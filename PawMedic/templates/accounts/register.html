@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form class="container mx-auto px-4 py-8">
+    {{ form }}
+    {% csrf_token %}
+     <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Register</button>
+</form>
+{% endblock %}
