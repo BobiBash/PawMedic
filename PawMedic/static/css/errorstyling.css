@@ -9,7 +9,7 @@
     list-style: none;
 }
 
-#id_password_error {
+ul {
     width: 14.25rem;
     text-align: center;
 }

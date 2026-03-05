@@ -9,8 +9,16 @@
     {% block extra_head %}{% endblock %}
 </head>
 <body class="flex flex-col bg-gray-100 min-h-screen">
-    <nav class="flex flex-row bg-green-300 p-6 sticky top-0">
-
+    <nav class="flex flex-row bg-green-300 p-5 sticky top-0 gap-4 shadow-lg">
+        <div class="flex flex-row gap-4 font-semibold text-xl">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="https://github.com/BobiBash">Github</a>
+            <a>About</a>
+        </div>
+        <div class="flex flex-row gap-4 ml-auto font-semibold text-xl">
+            <a href="{% url 'register' %}">Sign up</a>
+            <a href="{% url 'login' %}">Sign in</a>
+        </div>
     </nav>
     <main class="flex-grow grid place-items-center">
         {% block content %}

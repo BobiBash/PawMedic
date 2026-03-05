@@ -9,5 +9,5 @@ from .choices import PawMedicUserType
 class PawMedicUser(AbstractUser):
     email = models.EmailField(unique=True)
 
-    phone = PhoneNumberField(blank=True)
+    phone = PhoneNumberField(unique=True)
     role = models.CharField(max_length=20, choices=PawMedicUserType.choices, default=PawMedicUserType.OWNER)

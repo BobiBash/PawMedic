@@ -12,14 +12,20 @@ class RegistrationForm(UserCreationForm):
 
     def __init__(self, *args, role=None, **kwargs):
         super().__init__(*args, **kwargs)
+
+        if role != PawMedicUserType.VET:
+            self.fields.pop('phone')
+        print(self.fields)
+
         for field in self.fields:
             self.fields[field].widget.attrs['class'] = 'outline-none'
             self.fields[field].help_text = None
             self.fields[field].error_messages = {
-                 'required': f'Please enter your {field}.',
+                 'required': f'This field is required.',
             }
-        if role != PawMedicUserType.VET:
-            self.fields.pop('phone')
+
+        print(self.fields)
+
 
 
     def clean_username(self):
