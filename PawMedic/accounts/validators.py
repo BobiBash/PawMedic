@@ -15,6 +15,3 @@ def validate_username_taken(value):
     if PawMedicUser.objects.filter(username=value).exists():
         raise ValidationError("Username is already taken.")
 
-def validate_username_alpha(value):
-    if not value.isalpha():
-        raise ValidationError("Username must contain only letters.")

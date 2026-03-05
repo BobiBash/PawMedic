@@ -20,5 +20,8 @@
   "homepage": "https://github.com/BobiBash/Softuni-Django-advanced-project#readme",
   "devDependencies": {
     "tailwindcss": "^4.2.1"
+  },
+  "dependencies": {
+    "intl-tel-input": "^26.7.6"
   }
 }

@@ -1,6 +1,8 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UsernameField
+from phonenumber_field.widgets import PhoneNumberPrefixWidget
+
 from .models import PawMedicUser
-from .validators import validate_password_strength, validate_username_taken, validate_username_alpha
+from .validators import validate_password_strength, validate_username_taken
 from .choices import PawMedicUserType
 
 
@@ -15,30 +17,24 @@ class RegistrationForm(UserCreationForm):
 
         if role != PawMedicUserType.VET:
             self.fields.pop('phone')
-        print(self.fields)
 
         for field in self.fields:
-            self.fields[field].widget.attrs['class'] = 'outline-none'
+            self.fields[field].widget.attrs['class'] = 'outline-none w-100%'
             self.fields[field].help_text = None
             self.fields[field].error_messages = {
                  'required': f'This field is required.',
             }
 
-        print(self.fields)
-
-
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
         validate_username_taken(username)
-        validate_username_alpha(username)
         return username
 
     def clean_password1(self):
         password1 = self.cleaned_data.get('password1')
         validate_password_strength(password1)
         return password1
-
 
 
 class LoginForm(AuthenticationForm):

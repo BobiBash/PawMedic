@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
@@ -26,7 +26,7 @@ class RegisterView(CreateView):
         user = form.save(commit=False)
         user.role = PawMedicUserType.OWNER
         user.save()
-        return super().form_valid(form)
+        return redirect('home')
 
 class RegisterVetView(CreateView):
     template_name = 'accounts/register_vet.html'
@@ -43,7 +43,7 @@ class RegisterVetView(CreateView):
         user.role = PawMedicUserType.VET
         user.is_active = False
         user.save()
-        return super().form_valid(form)
+        return redirect('home')
 
 class LoginUserView(LoginView):
     template_name = 'accounts/login.html'
