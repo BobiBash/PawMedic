@@ -33,6 +33,14 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+AUTH_USER_MODEL = 'accounts.PawMedicUser'
+
+AUTHENTICATION_BACKENDS = ['accounts.backends.EmailOrUsernameBackend']
+
+APPS = ['accounts', 'common',
+        'forum', 'notifications',
+        'pets', 'shop']
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -40,8 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_tailwind_cli'
-]
+    'django_tailwind_cli',
+] + APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -79,7 +87,7 @@ WSGI_APPLICATION = 'PawMedic.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": '',
+        "NAME": 'pawmedic_db',
         "USER": os.getenv('DB_USER'),
         "PASSWORD": os.getenv('DB_PASSWORD'),
         "HOST": "127.0.0.1",
@@ -124,4 +132,4 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATICFILES_DIRS = [BASE_DIR / "assets"]
+STATICFILES_DIRS = [BASE_DIR / "static"]

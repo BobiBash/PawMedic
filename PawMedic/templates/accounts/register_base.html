@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/errorstyling.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+{% endblock %}
+{% block content %}
+<form method="post" class="container mx-auto px-4 py-8">
+    <div class="flex flex-col justify-center align-middle w-100 items-center gap-4 mx-auto bg-white p-12 rounded shadow">
+        <h1 class="text-2xl font-semibold mb-8">Sign up</h1>
+        {% csrf_token %}
+        <div class="mb-4">
+            <label class="text-lg">{{ form.username.label }}</label>
+            <p class="border rounded-sm w-57 p-1">{{ form.username }}</p>
+            <p>{{ form.username.errors }}</p>
+        </div>
+        <div class="mb-4">
+            <label class="text-lg">{{ form.email.label }}</label>
+            <p class="border rounded-sm w-57 p-1">{{ form.email }}</p>
+            <p>{{ form.email.errors }}</p>
+        </div>
+        <div class="flex flex-col items-start mb-2 w-57">
+            <label class="text-lg">{{ form.password1.label }}</label>
+            <div class="border rounded-sm w-57 p-1 flex">{{ form.password1 }}
+                <button id="TogglePassword" class="ml-2" type="button">
+                    <i id="pass-icon" class="fa-solid fa-eye"></i>
+                </button>
+            </div>
+            <p>{{ form.password1.errors }}</p>
+        </div>
+        <div class="mb-4">
+            <label class="text-lg">{{ form.password2.label }}</label>
+            <div class="border rounded-sm w-57 p-1 flex">{{ form.password2 }}
+                <button id="TogglePassword2" class="ml-2" type="button">
+                    <i id="pass-icon2" class="fa-solid fa-eye"></i>
+                </button>
+            </div>
+            <p>{{ form.password2.errors }}</p>
+        </div>
+        {% block extra_fields %}{% endblock %}
+
+         <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Register</button>
+    </div>
+</form>
+<script src="{% static 'password_eye.js' %}"></script>
+{% endblock %}
