@@ -9,8 +9,6 @@ from .forms import RegistrationForm, LoginForm
 
 
 # Create your views here.
-def register_view(request):
-    return render(request, 'accounts/register.html')
 
 class RegisterView(CreateView):
     template_name = 'accounts/register_user.html'
