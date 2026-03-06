@@ -2,17 +2,17 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import LoginView
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import CreateView
-from simple_email_confirmation.models import EmailAddress
 
 from .choices import PawMedicUserType
 from .forms import RegistrationForm, LoginForm
-from .models import PawMedicUser
+from .models import PawMedicUser, EmailConfirmation
 
 
 # Create your views here.
@@ -31,18 +31,18 @@ class RegisterView(CreateView):
         user = form.save(commit=False)
         user.role = PawMedicUserType.OWNER
         user.save()
-
-        confirmation_key = user.add_email_if_not_exists(user.email)
+        token = default_token_generator.make_token(user)
+        EmailConfirmation.objects.create(user=user, token=token)
         confirmation_url = self.request.build_absolute_uri(
-            reverse('confirm-email', kwargs={'key': confirmation_key})
+            reverse('confirm-email', kwargs={'key': token})
         )
         send_mail(
-            'Confirm your Email',
-            'Click this link to confirm your email: %s' % confirmation_url,
+            'Email Confirmation',
+            f'Greetings {user.username} you can confirm your email at: %s' % confirmation_url,
             settings.DEFAULT_FROM_EMAIL,
             [user.email],
         )
-        return redirect('home')
+        return redirect('needed-email-confirmation')
 
 
 
@@ -76,12 +76,14 @@ class LoginUserView(LoginView):
 
 class ConfirmEmailView(View):
     def get(self, request, key):
-        email = EmailAddress.objects.get(key=key)
-        user = email.user
-        user.confirm_email(key)
+        confirmation = EmailConfirmation.objects.get(token=key)
+        user = confirmation.user
         user.is_active = True
         user.save()
-        return redirect('login')
+        confirmation.delete()
+        return redirect('successful-email-confirmation')
+
+
 
 
 

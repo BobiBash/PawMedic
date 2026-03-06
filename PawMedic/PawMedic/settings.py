@@ -55,7 +55,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_tailwind_cli',
-    'simple_email_confirmation',
 ] + APPS
 
 MIDDLEWARE = [

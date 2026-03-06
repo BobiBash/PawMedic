@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex flex-col items-center ">
+    <p class="text-3xl font-semibold">Your email has been successfully confirmed.</p>
+    <a href="{% url 'login' %}" class="text-2xl border rounded-sm p-2 w-30 bg-green-500 hover:bg-green-700 text-white flex justify-center m-8">Login</a>
+</div>
+{% endblock %}

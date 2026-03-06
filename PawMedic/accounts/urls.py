@@ -9,5 +9,11 @@ urlpatterns = [
     path('register-vet/', views.RegisterVetView.as_view(), name='register_vet'),
     path('login/', views.LoginUserView.as_view(), name='login'),
     path('confirm-email/<str:key>/', views.ConfirmEmailView.as_view(), name='confirm-email'),
-    path('confirm-vet', TemplateView.as_view(template_name='accounts/confirm_vet.html'), name='confirm-vet')
+    path('confirm-vet', TemplateView.as_view(template_name='accounts/confirm_vet.html'), name='confirm-vet'),
+    path('email-confirmation',
+         TemplateView.as_view(template_name='accounts/email_confirmation.html'),
+         name='needed-email-confirmation'),
+    path('succesful-confirmation',
+         TemplateView.as_view(template_name='accounts/successful_email_confirmation.html'),
+         name='successful-email-confirmation')
 ]
