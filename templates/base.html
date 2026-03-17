@@ -20,7 +20,11 @@
                 <a href="{% url 'register' %}">Sign up</a>
                 <a href="{% url 'login' %}">Sign in</a>
             {% else %}
-                <a href="{% url 'profile' %}">Profile</a>
+                {% if user.role == 'OWNER' %}
+                    <a href="{% url 'user-profile' %}"></a>
+                {% else %}
+                    <a href="{% url 'vet-profile' %}">Profile</a>
+                {% endif %}
             {% endif %}
         </div>
     </nav>

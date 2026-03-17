@@ -36,9 +36,12 @@ ALLOWED_HOSTS = []
 AUTH_USER_MODEL = 'accounts.PawMedicUser'
 
 # email settings
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = 1025
+EMAIL_PORT = 587
 
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend',
                            'accounts.backends.EmailOrUsernameBackend',]

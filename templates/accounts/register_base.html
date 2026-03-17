@@ -21,7 +21,7 @@
             <p class="border rounded-sm w-60 p-1">{{ form.username }}</p>
             {{ form.username.errors }}
         </div>
-        <div class="mb-4 w-60>
+        <div class="mb-4 w-60">
             <label class="text-lg">{{ form.email.label }}</label>
             <p class="border rounded-sm w-60 p-1">{{ form.email }}</p>
             {{ form.email.errors }}
@@ -43,6 +43,11 @@
                 </button>
             </div>
             <p>{{ form.password2.errors }}</p>
+        </div>
+        <div class="mb-4 w-60">
+            <label class="text-lg">{{ form.phone.label }}</label>
+            <p class="border rounded-sm w-60 p-1">{{ form.phone }}</p>
+            {{ form.phone.errors }}
         </div>
         {% block extra_fields %}{% endblock %}
 

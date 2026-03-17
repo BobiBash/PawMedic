@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model, get_user
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UsernameField
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UsernameField, UserChangeForm, \
+    PasswordResetForm
 from django.core.exceptions import ValidationError
 from phonenumber_field.widgets import PhoneNumberPrefixWidget
 
@@ -16,9 +17,6 @@ class RegistrationForm(UserCreationForm):
 
     def __init__(self, *args, role=None, **kwargs):
         super().__init__(*args, **kwargs)
-
-        if role != PawMedicUserType.VET:
-            self.fields.pop('phone')
 
         for field in self.fields:
             self.fields[field].widget.attrs['class'] = 'outline-none w-100%'
@@ -61,6 +59,10 @@ class LoginForm(AuthenticationForm):
             raise ValidationError(self.error_messages['inactive'],
                                   code='inactive',)
 
+class VetProfileForm(UserChangeForm):
+    ...
 
+class PawMedicUserPasswordReset(PasswordResetForm):
+    ...
 
 

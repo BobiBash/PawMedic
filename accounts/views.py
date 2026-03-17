@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.tokens import default_token_generator
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
@@ -26,7 +26,7 @@ class RegisterView(CreateView):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect('home')
-        return super().dispatch(*args, **kwargs)
+        return super().dispatch(request,*args, **kwargs)
 
 
     def get_form_kwargs(self):
@@ -61,7 +61,7 @@ class RegisterVetView(CreateView):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect('home')
-        return super().dispatch(*args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
 
     def get_form_kwargs(self):
@@ -87,7 +87,7 @@ class RegisterOptionsView(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect('home')
-        return super().dispatch(*args, **kwargs)
+        return super().dispatch(request,*args, **kwargs)
 
 class LoginUserView(LoginView):
     template_name = 'accounts/login.html'
@@ -106,7 +106,8 @@ class ConfirmEmailView(View):
         return redirect('successful-email-confirmation')
 
 
-class ProfileView(LoginRequiredMixin, TemplateView):
+class UserProfileView(LoginRequiredMixin, TemplateView):
+    template_name = 'accounts/user_profile.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -115,10 +116,16 @@ class ProfileView(LoginRequiredMixin, TemplateView):
         context['profile'] = user
         return context
 
-    def get_template_names(self):
-        if self.request.user.role == PawMedicUserType.OWNER:
-            return ['accounts/owner_profile.html']
-        return ['accounts/vet_profile.html']
+
+class VetProfileView(LoginRequiredMixin, TemplateView):
+    template_name = 'accounts/vet_profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        print(user, user.email, user.role)
+        context['profile'] = user
+        return context
 
 
 
