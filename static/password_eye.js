@@ -22,3 +22,4 @@ PasswordToggle('id_password2', 'TogglePassword2', 'pass-icon2');
 PasswordToggle('id_password', "LoginTogglePassword", 'pass-icon-login');
 PasswordToggle('id_new_password1', 'ToggleNewPassword', 'new-pass-icon')
 PasswordToggle('id_new_password2', 'ToggleNewPassword2', 'new-pass-icon2')
+PasswordToggle('id_old_password', 'ToggleOldPassword', 'old-pass-icon')
