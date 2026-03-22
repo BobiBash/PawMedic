@@ -9,4 +9,4 @@ class Pet(models.Model):
     species = models.CharField(max_length=100)
     breed = models.CharField(max_length=100)
     date_of_birth = models.DateField()
-    pet_photo = models.ImageField(null=True, blank=True)
+    pet_photo = models.ImageField(upload_to="media/", null=True, blank=True)

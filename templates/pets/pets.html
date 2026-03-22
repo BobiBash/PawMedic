@@ -2,21 +2,28 @@
 
 {% block content %}
 {% include 'common/profile_navbar.html' %}
-<div class="flex gap-4 w-200">
-    {% for pet in object_list %}
-        <a class="flex flex-col border p-8" href="{% url 'view-pet' pet.id %}">
-            <p>{{ pet.name }}</p>
-            <p>{{ pet.species }}</p>
-            <p>{{ pet.breed }}</p>
-            <p>{{ pet.date_of_birth }}</p>
-            <p>{{ pet.pet_photo }}</p>
-            <a href="{% url 'edit-pet' pet.id %}">Edit pet</a>
-            <a href="{% url 'delete-pet' pet.id %}">Delete pet</a>
-        </a>
-    {% endfor %}
-</div>
-    <div>
-        <a href="{% url 'add-pet' %}">Add Pet</a>
+<div class="absolute top-45">
+    <a class="flex mx-auto justify-center p-2 bg-green-200 hover:bg-green-300 mb-15 w-30 border rounded-sm text-xl" href="{% url 'add-pet' %}">Add Pet +</a>
+    <div class="grid grid-cols-4 gap-4 w-300">
+        {% for pet in object_list %}
+                <div class="flex flex-col w-72 wrap-normal border rounded-sm gap-2 p-4">
+                    <p class="border-b-1">Name: {{ pet.name }}</p>
+                    <p class="border-b-1">Species: {{ pet.species }}</p>
+                    <p class="border-b-1">Breed: {{ pet.breed }}</p>
+                    <p class="border-b-1">Date of Birth:{{ pet.date_of_birth }}</p>
+                    {% if pet.pet_photo %}
+                        <img class="h-20 w-20" src="{{ pet.pet_photo.url }}" alt="{{ pet.name}} ">
+                    {% else %}
+                        <p>No photo.</p>
+                    {% endif %}
+                    <div class="flex flex-row gap-4 justify-center">
+                        <a class="border border-black rounded-sm p-1 bg-green-400 text-white" href="{% url 'view-pet' pet.id %}">Details</a>
+                        <a class="border border-black rounded-sm p-1 bg-blue-500 text-white" href="{% url 'edit-pet' pet.id %}">Edit pet</a>
+                        <a class="border border-black rounded-sm p-1 bg-red-500 text-white" href="{% url 'delete-pet' pet.id %}">Delete pet</a>
+                    </div>
+                </div>
+        {% endfor %}
     </div>
+</div>
 
 {% endblock %}
