@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% include 'common/profile_navbar.html' %}
-    <form method="post">{% csrf_token %}
-        <p>Are you sure you want to delete "{{ object.name }}"?</p>
-        {{ form }}
-        <button type="submit">Confirm</button>
-    </form>
+<form method="post" class="flex flex-col gap-4">
+  {% csrf_token %}
+  <h1 class="font-semibold text-xl">Are you sure you want to delete your pet "{{ object.name }}"?</h1>
+  <div class="flex flex-row mx-auto gap-4">
+    <button class="text-lg border rounded-sm bg-red-500 p-1.5 text-white border-black" type="submit">Confirm</button>
+    <a class="text-lg border rounded-sm bg-gray-400 p-1.5 text-white border-black" href="{% url 'pets' %}">Cancel</a>
+  </div>
+</form>
 {% endblock %}

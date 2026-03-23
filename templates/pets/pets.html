@@ -14,16 +14,20 @@
                     {% if pet.pet_photo %}
                         <img class="h-20 w-20" src="{{ pet.pet_photo.url }}" alt="{{ pet.name}} ">
                     {% else %}
-                        <p>No photo.</p>
+                        <p class="h-20 w-20">No photo.</p>
                     {% endif %}
                     <div class="flex flex-row gap-4 justify-center">
                         <a class="border border-black rounded-sm p-1 bg-green-400 text-white" href="{% url 'view-pet' pet.id %}">Details</a>
                         <a class="border border-black rounded-sm p-1 bg-blue-500 text-white" href="{% url 'edit-pet' pet.id %}">Edit pet</a>
-                        <a class="border border-black rounded-sm p-1 bg-red-500 text-white" href="{% url 'delete-pet' pet.id %}">Delete pet</a>
+                        <a onclick="" class="border border-black rounded-sm p-1 bg-red-500 text-white" href="{% url 'delete-pet' pet.id %}">Delete pet</a>
                     </div>
                 </div>
         {% endfor %}
     </div>
 </div>
+{% block scripts %}
+    <script>
 
+    </script>
+{% endblock %}
 {% endblock %}

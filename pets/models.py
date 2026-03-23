@@ -1,6 +1,7 @@
 from django.db import models
 
 from accounts.models import PawMedicUser
+from pets.validators import validate_date
 
 
 class Pet(models.Model):
@@ -8,5 +9,5 @@ class Pet(models.Model):
     name = models.CharField(max_length=100)
     species = models.CharField(max_length=100)
     breed = models.CharField(max_length=100)
-    date_of_birth = models.DateField()
+    date_of_birth = models.DateField(validators=[validate_date])
     pet_photo = models.ImageField(upload_to="media/", null=True, blank=True)

@@ -20,7 +20,11 @@
     </div>
     <div class="flex flex-row gap-2">
         <label class="font-light">Phone Number: </label>
-        <p>{{ user.phone }}</p>
+        {% if user.phone %}
+            <p>{{ user.phone }}</p>
+        {% else %}
+            <p></p>
+        {% endif %}
     </div>
     {% block fields %}
     {% endblock %}

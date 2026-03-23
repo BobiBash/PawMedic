@@ -1,16 +1,21 @@
-{% extends 'base.html' %}
+{% extends 'pets/pets-add-edit-base.html' %}
 
-{% block content %}
-{% include 'common/profile_navbar.html' %}
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div>
-        <p>{{ form.name }}</p>
-        <p>{{ form.species }}</p>
-        <p>{{ form.breed }}</p>
-        <p>{{ form.date_of_birth }}</p>
-        <p>{{ form.pet_photo }}</p>
-    </div>
-    <button type="submit">Submit Change</button>
-</form>
+{% block header %}
+<h1 class="text-2xl font-semibold mx-auto gap-10">Edit Pet</h1>
+{% endblock %}
+
+{% block button %}
+<button class="flex mx-auto border rounded-sm p-2 text-lg w-25 bg-green-200
+  justify-center hover:cursor-pointer"
+  type="submit">Submit</button>
+{% endblock %}
+
+{% block image_field %}
+    {% if field.name == 'pet_photo' %}
+      <button id="id_pet_photo" type="button" onclick="document.getElementById('id_pet_photo').click()"
+              class="bg-white border rounded-sm p-1 w-60 cursor-pointer">
+          Change Image
+      </button>
+      <img id="preview" src="{% if pet_photo %} {{ pet.pet_photo.url }} {% endif %}" class="hidden w-40 h-40 mx-auto rounded-sm mt-2">
+    {% endif %}
 {% endblock %}

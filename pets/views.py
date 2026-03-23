@@ -32,10 +32,16 @@ class EditPet(UpdateView):
     template_name = 'pets/edit-pet.html'
     success_url = reverse_lazy('pets')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['pet'] = self.get_object()
+        return context
+
     def get_queryset(self):
         return Pet.objects.filter(owner_id=self.request.user.id)
 
 class DeletePet(DeleteView):
+    model = Pet
     template_name = 'pets/delete-pet.html'
     success_url = reverse_lazy('pets')
 
