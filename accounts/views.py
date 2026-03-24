@@ -12,9 +12,9 @@ from django.views import View
 from django.views.generic import CreateView, TemplateView
 
 from .choices import PawMedicUserType
-from .forms import RegistrationForm, LoginForm
+from .forms import RegistrationForm, LoginForm, VetProfileForm
 from .mixins import AnonymousRequiredMixin
-from .models import PawMedicUser, EmailConfirmation
+from .models import PawMedicUser, EmailConfirmation, VetProfile
 
 
 # Create your views here.
@@ -54,33 +54,45 @@ class RegisterView(CreateView):
 
 
 
-class RegisterVetView(CreateView):
+class RegisterVetView(View):
     template_name = 'accounts/register_vet.html'
-    form_class = RegistrationForm
-    success_url = reverse_lazy('home')
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect('home')
         return super().dispatch(request, *args, **kwargs)
 
+    def get(self, request):
+        user_form = RegistrationForm(role=PawMedicUserType.VET)
+        vet_form = VetProfileForm()
+        context = {
+            'form': user_form,
+            'vet_form': vet_form
+        }
+        return render(request, self.template_name, context)
 
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['role'] = PawMedicUserType.VET
-        return kwargs
+    def post(self, request):
+        user_form = RegistrationForm(request.POST, request.FILES, role=PawMedicUserType.VET)
+        vet_form = VetProfileForm(request.POST, request.FILES)
 
-    def form_valid(self, form):
-        user = form.save(commit=False)
-        user.role = PawMedicUserType.VET
-        """
-        Set user.is_active to True for testing permissions etc. but the idea is that
-        the legitimacy of registered Veterinarians gets confirmed via a call by staff members
-        to ask additional information.
-        """
-        user.is_active = True
-        user.save()
-        return redirect('confirm-vet')
+        if user_form.is_valid() and vet_form.is_valid():
+            user = user_form.save(commit=False)
+            user.role = PawMedicUserType.VET
+            user.is_active = True
+            user.save()
+
+            vet_profile = vet_form.save(commit=False)
+            vet_profile.user = user
+            vet_profile.save()
+
+            return redirect('confirm-vet')
+
+        context = {
+            'form': user_form,
+            'vet_form': vet_form
+        }
+
+        return render(request, self.template_name, context)
 
 class RegisterOptionsView(TemplateView):
     template_name = 'accounts/register.html'
@@ -119,18 +131,34 @@ class UserProfileView(LoginRequiredMixin, TemplateView):
 
 
 class VetProfileView(LoginRequiredMixin, TemplateView):
+    model = VetProfile
     template_name = 'accounts/vet_profile.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.request.user
-        print(user, user.email, user.role)
+        vet = user.vet_profile
         context['profile'] = user
+        context['vet'] = vet
         return context
 
 class PawMedicPasswordResetView(AnonymousRequiredMixin, PasswordResetView):
     template_name = 'accounts/password_reset_form.html'
 
 
+class UpdateProfilePhotoView(LoginRequiredMixin, View):
+    def post(self, request):
+        vet = request.user.vet_profile
+        vet.photo = request.FILES.get('photo')
+        vet.save()
+        return redirect('vet-profile')
+
+class UpdateProfileBioView(LoginRequiredMixin, View):
+
+    def post(self, request):
+        vet = request.user.vet_profile
+        vet.bio = request.POST.get('bio')
+        vet.save()
+        return redirect('vet-profile')
 
 

@@ -48,7 +48,7 @@ AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend',
 
 APPS = ['accounts', 'common',
         'forum', 'notifications',
-        'pets', 'shop']
+        'pets', 'shop', 'vets']
 
 INSTALLED_APPS = [
     'django.contrib.admin',

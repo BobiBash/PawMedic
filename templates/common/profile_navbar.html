@@ -1,6 +1,6 @@
 
 {% block navbar %}
-<nav class="absolute text-center text-lg bg-gray-100 border border-t-0 top-17 w-200 grid grid-cols-5">
+<nav class="z-10 absolute text-center text-lg bg-gray-100 border border-t-0 top-17 w-200 grid grid-cols-5">
     {% if user.role == 'OWNER' %}
         <a href="{% url 'user-profile' %}" class="hover:bg-gray-200 border-r p-2">Your Profile</a>
     {% else %}

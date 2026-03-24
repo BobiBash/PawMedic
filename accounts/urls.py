@@ -49,5 +49,7 @@ urlpatterns = [
          name='needed-email-confirmation'),
     path('succesful-confirmation',
          TemplateView.as_view(template_name='accounts/successful_email_confirmation.html'),
-         name='successful-email-confirmation')
+         name='successful-email-confirmation'),
+    path('vet/update-photo/', views.UpdateProfilePhotoView.as_view(), name='update-vet-photo'),
+    path('vet/update-bio/', views.UpdateProfileBioView.as_view(), name='update-vet-bio'),
 ]

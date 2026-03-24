@@ -1,9 +1,10 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, \
     PasswordResetForm, PasswordChangeForm, SetPasswordForm
 from django.core.exceptions import ValidationError
+from django import forms
 
 from .mixins import PasswordValidationMixin
-from .models import PawMedicUser
+from .models import PawMedicUser, VetProfile
 from .validators import validate_password_strength, validate_username_taken
 
 
@@ -15,9 +16,10 @@ class RegistrationForm(UserCreationForm):
 
     def __init__(self, *args, role=None, **kwargs):
         super().__init__(*args, **kwargs)
+        self.role = role
 
         for field in self.fields:
-            self.fields[field].widget.attrs['class'] = 'outline-none w-100%'
+            self.fields[field].widget.attrs['class'] = 'outline-none w-60'
             self.fields[field].help_text = None
             self.fields[field].error_messages = {
                  'required': f'This field is required.',
@@ -34,6 +36,33 @@ class RegistrationForm(UserCreationForm):
         validate_password_strength(password1)
         return password1
 
+
+class VetProfileForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'outline-none w-60'
+            self.fields[field].help_text = None
+            self.fields[field].error_messages = {
+                 'required': f'This field is required.',
+            }
+
+    class Meta:
+        model = VetProfile
+        fields = ('specialization', 'years_of_experience', 'bio', 'photo')
+
+        widgets = {
+            'bio': forms.Textarea(attrs={
+                'rows': 6,
+                'cols': 25  ,
+                'style': 'resize:none',
+                'class': 'focus:outline-none',
+            }),
+            'years_of_experience': forms.NumberInput(attrs={
+            })
+
+        }
 
 class LoginForm(AuthenticationForm):
     error_messages = {
@@ -56,9 +85,6 @@ class LoginForm(AuthenticationForm):
         if not user.is_active:
             raise ValidationError(self.error_messages['inactive'],
                                   code='inactive',)
-
-class VetProfileForm(UserChangeForm):
-    ...
 
 class PawMedicUserPasswordReset(PasswordResetForm):
     ...

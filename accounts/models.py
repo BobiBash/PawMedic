@@ -4,7 +4,6 @@ from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
-
 from .choices import PawMedicUserType
 
 
@@ -14,7 +13,6 @@ class PawMedicUser(AbstractUser):
     phone = PhoneNumberField(unique=True, null=True)
     role = models.CharField(max_length=20, choices=PawMedicUserType.choices, default=PawMedicUserType.OWNER)
     is_active = models.BooleanField(default=False)
-    profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
 
 
 class EmailConfirmation(models.Model):
@@ -22,11 +20,12 @@ class EmailConfirmation(models.Model):
     token = models.CharField(max_length=64)
     created_at = models.DateTimeField(auto_now_add=True)
 
-class UserProfile(models.Model):
-    user = models.OneToOneField(PawMedicUser, on_delete=models.CASCADE)
-
 class VetProfile(models.Model):
-    user = models.OneToOneField(PawMedicUser, on_delete=models.CASCADE)
-    specialization = models.CharField(max_length=100, blank=True)
-    bio = models.TextField(blank=True)
-    years_experience = models.IntegerField(default=0)
+    user = models.OneToOneField(PawMedicUser, on_delete=models.CASCADE, related_name='vet_profile')
+    specialization = models.CharField(max_length=100)
+    years_of_experience = models.IntegerField()
+    bio = models.TextField()
+    photo = models.ImageField(upload_to='vet_photos/', blank=True, null=True)
+    is_published = models.BooleanField(default=False)
+
+

@@ -1,1 +1,19 @@
 {% extends 'accounts/register_base.html' %}
+
+{% block extra_fields %}
+        <div class="mb-4 w-60">
+            <label class="text-lg">{{ vet_form.specialization.label }}</label>
+            <p class="border rounded-sm w-60 p-1">{{ vet_form.specialization }}</p>
+            {{ vet_form.specialization.errors }}
+        </div>
+        <div class="mb-4 w-60">
+            <label class="text-lg">{{ vet_form.years_of_experience.label }}</label>
+            <p class="border rounded-sm w-60 p-1 [&::-webkit-inner-spin-button]:appearance-none">{{ vet_form.years_of_experience }}</p>
+            {{ vet_form.years_of_experience.errors }}
+        </div>
+        <div class="mb-4 w-60">
+            <label class="text-lg">{{ vet_form.bio.label }}</label>
+            <p class="border rounded-sm w-60 p-1">{{ vet_form.bio }}</p>
+            {{ vet_form.bio.errors }}
+        </div>
+{% endblock %}
