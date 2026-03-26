@@ -1,7 +1,9 @@
 from django.urls import path
 
-from vets.views import VetListView
+from vets.views import VetListView, VetPublishView, VetDetailView
 
 urlpatterns = [
-    path('', VetListView.as_view(), name='vet-list'),
+    path('', VetListView.as_view(), name='vets-list'),
+    path('vet-detail/<int:pk>', VetDetailView.as_view(), name='vets-detail'),
+    path('publish-vet', VetPublishView.as_view(), name='publish-vet'),
 ]

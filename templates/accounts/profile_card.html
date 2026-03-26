@@ -60,10 +60,14 @@
             </div>
         </div>
         <footer class="flex my-4 mx-6 justify-between ">
-            <form method="post" action="{% url 'logout' %}"
+            <form method="post" action="{% url 'publish-vet' %}"
             class=" bg-slate-400 flex border py-1 px-2 rounded-sm w-fit">
             {% csrf_token %}
-            <button type="submit" class="hover:cursor-pointer">Publish</button>
+            {% if vet.is_published %}
+                <button type="submit" class="hover:cursor-pointer">Unpublish</button>
+            {% else %}
+                <button type="submit" class="hover:cursor-pointer">Publish</button>
+            {% endif %}
             </form>
             <form method="post" action="{% url 'logout' %}"
             class=" bg-slate-400 flex border py-1 px-2 rounded-sm w-fit">
