@@ -8,7 +8,7 @@ import json
 
 from django.views.generic import CreateView
 
-from appointments.models import AppointmentSlot
+from appointments.models import AppointmentSlot, Appointment
 from pets.models import Pet
 
 
@@ -40,4 +40,11 @@ class VetScheduleView(LoginRequiredMixin, View):
         return redirect('vet-schedule', slug)
 
 class UserAppointMentView(LoginRequiredMixin, View):
-    ...
+    def post(self, request, slug):
+        owner_id = request.user.pk
+        slot_id = request.POST.get('slot')
+        pet_id = request.POST.get('pet')
+
+        Appointment.objects.create(owner_id=owner_id, slot_id=slot_id, pet_id=pet_id)
+
+        return redirect('vets-list')

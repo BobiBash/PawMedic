@@ -9,10 +9,10 @@
       <img src="{{ vet.photo.url }}" class="w-24 h-24 rounded-full mx-auto mb-3 object-cover">
     {% else %}
       <div class="w-24 h-24 rounded-full mx-auto mb-3 bg-green-100 flex items-center justify-center text-green-700 text-2xl font-medium">
-        {{ vet.user.first_name.0 }}{{ vet.user.last_name.0 }}
+        {{ vet.first_name }}{{ vet.user.last_name.0 }}
       </div>
     {% endif %}
-    <p class="text-center font-medium text-lg">Dr. {{ vet.user.get_full_name }}</p>
+    <p class="text-center font-medium text-lg">Dr. {{ vet.get_fullname }}</p>
     <p class="text-center text-sm text-gray-500 mb-3">{{ vet.specialization }}</p>
     <div class="text-center mb-4">
       <span class="bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full">Available</span>
@@ -29,9 +29,9 @@
   </div>
 
   <!-- Right: Booking card -->
-  <div class="bg-white rounded-xl border border-gray-200 p-6">
+  <div class="bg-white rounded-xl border w-sm border-gray-200 p-6">
     <p class="font-medium mb-4">Book an appointment</p>
-    <form method="POST" action="">
+    <form method="POST" action="{% url 'make-appointment' slug=vet.slug %}">
       {% csrf_token %}
       <label class="text-xs text-gray-400 block mb-1">Select pet</label>
       <select name="pet" class="w-full border border-gray-200 rounded-lg p-2 text-sm mb-4">
@@ -42,13 +42,10 @@
 
       <label class="text-xs text-gray-400 block mb-2">Select date & time</label>
       <!-- render your available slots here -->
-      <div class="grid grid-cols-3 gap-2 mb-4">
-        {% for slot in available_slots %}
-          <label class="border border-gray-200 rounded-lg p-2 text-center text-sm cursor-pointer has-[:checked]:bg-green-600 has-[:checked]:text-white has-[:checked]:border-green-600">
-            <input type="radio" name="slot" value="{{ slot.pk }}" class="hidden">
-            {{ slot.time }}
-          </label>
-        {% endfor %}
+      <label id="dateLabel" class="border rounded-sm placeholder:'Pick a Date'"><input class="focus:outline-none" type="text" name="date" id="date-input" placeholder="Pick a date"></label>
+        <div class="flex mb-4">
+          <div id="appointment-hours" class="flex gap-2">
+          </div>
       </div>
 
       <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white rounded-lg py-2.5 text-sm font-medium">
@@ -62,5 +59,47 @@
 
 {% block scripts %}
   <script>
+    const AppointmentSlots = {{ available_slots_json|safe }};
+    console.log(AppointmentSlots)
+
+    const formatted_slots = AppointmentSlots.reduce((acc, slot) => {
+        if (!acc[slot.date]) {
+            acc[slot.date] = [];
+
+        }
+        acc[slot.date].push({pk: slot.id, time: slot.time});
+        return acc;
+    }, {});
+    console.log(formatted_slots)
+
+    const appointmentHours = document.getElementById('appointment-hours')
+    const dateLabel = document.getElementById('dateLabel')
+
+      const fp = flatpickr("#date-input", {
+        minDate: 'today',
+        maxDate: new Date().fp_incr(61),
+        altInput: true,
+        altFormat: "F j, Y",
+        dateFormat: "Y-m-d",
+        onChange: function(selectedDates, dateStr) {
+            console.log(selectedDates)
+            console.log(dateStr)
+
+            if (Object.keys(formatted_slots).includes(dateStr)) {
+                const AvailableHoursLabel = document.createElement('p')
+                AvailableHoursLabel.textContent = 'Available hours'
+                dateLabel.insertAdjacentElement('afterend', AvailableHoursLabel);
+                formatted_slots[dateStr].forEach(slot => {
+                    console.log(formatted_slots)
+                    const div = document.createElement('div')
+                    const label = document.createElement('label')
+                    label.innerHTML = `<input type="radio" name="slot" value="${slot.pk}" class=""> ${slot["time"].slice(0, 5)}`;
+                    div.appendChild(label)
+                    appointmentHours.appendChild(div);
+                });
+            } else {
+                console.log("doesnt work")
+            }
+        }});
   </script>
 {% endblock %}

@@ -17,26 +17,33 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </head>
 <body class="flex flex-col bg-gray-100 min-h-screen">
-    <nav class="flex flex-row bg-green-200 p-5 sticky top-0 gap-4 shadow-lg">
-        <div class="flex flex-row gap-4 font-semibold text-xl">
-            <a href="{% url 'home' %}">Home</a>
-            <a href="https://github.com/BobiBash">Github</a>
-            <a>About</a>
-        </div>
-        <div class="flex flex-row gap-4 ml-auto font-semibold text-xl">
-            {% if not user.is_authenticated %}
-                <a href="{% url 'register' %}">Sign up</a>
-                <a href="{% url 'login' %}">Sign in</a>
-            {% else %}
-                {% if user.role == 'OWNER' %}
-                    <a href="{% url 'user-profile' %}">Profile</a>
+    <div class="sticky top-0 z-50">
+        <nav class="flex flex-row bg-green-200 p-5 sticky top-0 gap-4 shadow-lg">
+            <div class="flex flex-row gap-4 font-semibold text-xl">
+                <a href="{% url 'home' %}">Home</a>
+                <a href="https://github.com/BobiBash">Github</a>
+                <a>About</a>
+            </div>
+            <div class="flex flex-row gap-4 ml-auto font-semibold text-xl">
+                {% if not user.is_authenticated %}
+                    <a href="{% url 'register' %}">Sign up</a>
+                    <a href="{% url 'login' %}">Sign in</a>
                 {% else %}
-                    <a href="{% url 'vet-profile' %}">Profile</a>
+                    {% if user.role == 'OWNER' %}
+                        <a href="{% url 'user-profile' %}">Profile</a>
+                    {% else %}
+                        <a href="{% url 'vet-profile' %}">Profile</a>
+                    {% endif %}
                 {% endif %}
-            {% endif %}
+            </div>
+        </nav>
+        <div class="flex justify-center">
+            {% block navbar %}
+            {% endblock %}
         </div>
-    </nav>
-    <main class="flex-grow grid place-items-center">
+
+    </div>
+    <main class="grow grid place-items-center">
         {% block content %}
         {% endblock %}
     </main>

@@ -1,7 +1,7 @@
-{% extends 'base.html' %}
+{% extends 'common/profile_navbar.html' %}
 
 {% block content %}
-{% include 'common/profile_navbar.html' %}
+
 <form method="post" novalidate enctype="multipart/form-data">
   {% csrf_token %}
   <div class="flex flex-col gap-2 px-10 py-5 max-h-160 m-10 bg-orange-100 border rounded-sm">

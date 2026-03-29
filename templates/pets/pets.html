@@ -1,7 +1,6 @@
-{% extends 'base.html' %}
+{% extends 'common/profile_navbar.html' %}
 
 {% block content %}
-{% include 'common/profile_navbar.html' %}
 <div class="absolute top-45">
     <a class="flex mx-auto justify-center p-2 bg-green-200 hover:bg-green-300 mb-15 w-30 border rounded-sm text-xl" href="{% url 'add-pet' %}">Add Pet +</a>
     <div class="grid grid-cols-4 gap-4 w-300">
