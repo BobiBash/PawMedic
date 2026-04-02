@@ -22,7 +22,7 @@ class ForumCommentForm(forms.ModelForm):
                 'rows': 3,
                 'cols': 40,
                 'style': 'resize:none',
-                'class': 'border p-2 rounded-sm focus:outline-none',
+                'class': 'border p-2 m-2 rounded-sm focus:outline-none',
             })
         }
 

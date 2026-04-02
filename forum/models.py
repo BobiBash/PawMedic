@@ -1,6 +1,7 @@
 from django.db import models
 
 from accounts.models import PawMedicUser
+from forum.choices import ForumVoteType
 
 
 # Create your models here.
@@ -16,3 +17,11 @@ class Comment(models.Model):
     content = models.TextField()
     created_on = models.DateField(auto_now_add=True)
 
+
+class Vote(models.Model):
+    post = models.ForeignKey(ForumPost, on_delete=models.CASCADE, related_name='votes')
+    type = models.CharField(choices=ForumVoteType.choices, max_length=10)
+    user = models.ForeignKey(PawMedicUser, on_delete=models.CASCADE, related_name='user_votes')
+
+    class Meta:
+        unique_together = ('post', 'user')
