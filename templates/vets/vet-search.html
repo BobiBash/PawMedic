@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Results for {{ query }}</h1>
+<div class="p-2 gap-4 flex flex-col m-10">
+  {% for vet in page_obj %}
+  <a href="{% url 'vets-detail' slug=vet.slug pk=vet.pk %}" class="border rounded-sm p-2 flex h-60 w-2xl gap-4 bg-orange-100">
+    <div class="flex w-fit flex-col">
+      <div class="flex flex-row justify-center gap-2 font-semibold text-lg">
+        <p>{{ vet.user.first_name }}</p>
+        <p>{{ vet.user.last_name }}</p>
+      </div>
+      {% if vet.photo %}
+        <img class="mt-3 border rounded-sm h-45 w-50" src="{{ vet.photo.url }}">
+      {% else %}
+        <div id="imagePreviewDiv" class="mt-3 h-45 w-50 mx-auto rounded-sm border bg-gray-100 flex items-center justify-center text-gray-400">No photo</div>
+        <img id="ImagePreview" class="h-45 w-50 rounded-full hidden" src="">
+      {% endif %}
+    </div>
+    <div class=" w-md gap-2 flex flex-col flex-wrap">
+      <div>
+        <label class="text-xl font-semibold">Specialization </label>
+        <p>{{ vet.specialization }}</p>
+      </div>
+      <div>
+        <label class="text-xl font-semibold">Years of experience</label>
+        <p>{{ vet.years_of_experience }}</p>
+      </div>
+      <div>
+      <label  class="text-xl font-semibold">Biography</label>
+        <p class="w-100 overflow-hidden text-ellipsis">{{ vet.bio }}</p>
+      </div>
+    </div>
+  </a>
+  {% endfor %}
+  <div class="inline mx-auto gap-2">
+    {% if page_obj.has_previous %}
+      <a class="border py-1 px-2 rounded-sm bg-gray-200" href="?page=1">First</a>
+      <a class="border py-1 px-2 rounded-sm bg-gray-200" href="?page={{ page_obj.prev_page_number }}">Previous</a>
+      {% endif %}
+      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+      {% if page_obj.has_next %}
+      <a class="border py-1 px-2 rounded-sm bg-gray-200" href="?page={{ page_obj.next_page_number }}">Next</a>
+      <a class="border py-1 px-2 rounded-sm bg-gray-200" href="?page=last">Last</a>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

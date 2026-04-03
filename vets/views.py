@@ -1,6 +1,7 @@
 import json
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import ListView, DetailView
@@ -19,7 +20,7 @@ class VetListView(LoginRequiredMixin, ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        return VetProfile.objects.exclude(photo__isnull=True).exclude(photo__exact='').exclude(is_published=False)
+        return VetProfile.objects.exclude(is_published=False)
 
 class VetPublishView(LoginRequiredMixin, View):
     def post(self, request):
@@ -55,6 +56,24 @@ class VetDetailView(LoginRequiredMixin, View):
         }
 
         return render(request, 'vets/vets-detail.html', context)
+
+class VetSearchView(LoginRequiredMixin, View):
+
+    def get(self, request):
+        query = request.GET.get('search', '')
+        print(query)
+        vets_found = VetProfile.objects.filter(user__first_name__contains=query)
+        paginator = Paginator(vets_found, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context = {
+            'query': query,
+            'vets': vets_found,
+            'page_obj': page_obj,
+        }
+
+        return render(request, 'vets/vet-search.html', context)
+
 
 
 
