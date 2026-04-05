@@ -58,6 +58,11 @@
         input.addEventListener('input', async () => {
 
             const query = input.value
+
+            if (query.length < 3) {
+                results.classList.add('hidden')
+                return
+            }
             const res = await fetch(`api/vets/?search=${query}`)
             const data = await res.json()
 
@@ -90,7 +95,10 @@
 
         input.addEventListener('keydown', (event) => {
             if (event.key === "Enter") {
-                this.form.submit();
+                event.preventDefault();
+                if (input.value.length >= 3) {
+                    input.form.submit();
+                }
             }
         });
     </script>

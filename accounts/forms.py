@@ -2,8 +2,6 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, User
     PasswordResetForm, PasswordChangeForm, SetPasswordForm
 from django.core.exceptions import ValidationError
 from django import forms
-
-from .choices import PawMedicUserType
 from .mixins import PasswordValidationMixin
 from .models import PawMedicUser, VetProfile
 from .validators import validate_password_strength, validate_username_taken

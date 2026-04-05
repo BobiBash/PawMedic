@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Results for {{ query }}</h1>
+    {% if page_obj %}
+        <h1 class="text-3xl font-semibold m-5">Results for "{{ query }}"</h1>
+    {% else %}
+        <h1 class="text-3xl font-semibond m-5">No results found</h1>
+    {% endif %}
 <div class="p-2 gap-4 flex flex-col m-10">
   {% for vet in page_obj %}
   <a href="{% url 'vets-detail' slug=vet.slug pk=vet.pk %}" class="border rounded-sm p-2 flex h-60 w-2xl gap-4 bg-orange-100">
