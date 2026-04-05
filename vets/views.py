@@ -2,6 +2,7 @@ import json
 
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import ListView, DetailView
@@ -70,7 +71,7 @@ class VetSearchView(LoginRequiredMixin, View):
     def get(self, request):
         query = request.GET.get('search', '')
         print(query)
-        vets_found = VetProfile.objects.filter(user__first_name__contains=query)
+        vets_found = VetProfile.objects.filter(Q(user__first_name__icontains=query) | Q(user__last_name__icontains=query))
         paginator = Paginator(vets_found, 10)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
