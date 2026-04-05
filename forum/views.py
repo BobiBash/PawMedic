@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
-from forum.forms import ForumCommentForm
+from forum.forms import ForumCommentForm, ForumCreatePostForm
 from forum.models import ForumPost, Comment
 
 
@@ -14,8 +14,8 @@ class ForumPostsListView(LoginRequiredMixin, ListView):
 
 class ForumCreatePostView(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     model = ForumPost
+    form_class = ForumCreatePostForm
     template_name = 'forum/forum-create-post.html'
-    fields = ('title', 'content')
     permission_required = 'forum.add_forumpost'
 
 

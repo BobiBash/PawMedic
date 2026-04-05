@@ -1,5 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {{ form }}
+    <form class="flex flex-col" method="post" novalidate>
+        <div>
+            <label>{{ form.title.label }}</label>
+            <p>{{ form.title }}</p>
+            {{ form.title.errors }}
+        </div>
+        <div>
+            <label>{{ form.content.label }}</label>
+            <p>{{ form.content }}</p>
+            {{ form.content.errors }}
+        </div>
+    </form>
 {% endblock %}

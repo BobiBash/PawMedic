@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="flex flex-col gap-4 w-100">
+    <a class="absolute top-25 text-2xl border rounded-sm p-1 bg-gray-300" href="{% url 'forum-post-create' %}">Create Post + </a>
+    <div class="flex flex-col gap-4 w-100 justify-center items-center">
     {% if object_list %}
         {% for object in object_list %}
             <a href="{% url 'forum-post-details' pk=object.pk %}" class="flex flex-col border p-4 rounded-sm">

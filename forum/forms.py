@@ -9,6 +9,22 @@ class ForumPostsForm(forms.ModelForm):
         model = ForumPost
         fields = "__all__"
 
+class ForumCreatePostForm(forms.ModelForm):
+
+    class Meta:
+        model = ForumPost
+        fields = ('title', 'content')
+
+        widgets = {
+            'title': forms.TextInput(attrs={
+                'class': 'p-1 border rounded-sm focus:outline-none'
+            }),
+            'content': forms.Textarea(attrs={
+                'class': 'p-1 border rounded-sm focus:outline-none',
+                'style': 'resize:none'
+            })
+        }
+
 
 class ForumCommentForm(forms.ModelForm):
 
