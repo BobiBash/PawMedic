@@ -40,7 +40,8 @@ class VetPublishView(PermissionRequiredMixin, LoginRequiredMixin, View):
 class VetDetailView(LoginRequiredMixin, View):
     def get(self, request, slug, pk):
         user = request.user
-        vet = VetProfile.objects.filter(user_id=pk).first()
+        print(pk)
+        vet = VetProfile.objects.get(pk=pk)
         print(vet.bio)
         print(user)
         pets = Pet.objects.filter(owner_id=user.id)

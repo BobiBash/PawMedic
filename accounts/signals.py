@@ -8,7 +8,7 @@ from .choices import PawMedicUserType
 def assign_user_to_group(sender, instance, created, **kwargs):
     if created:
         if instance.role == PawMedicUserType.VET:
-            group, _ = Group.objects.get(name='Vets')
+            group, _ = Group.objects.get_or_create(name='Vets')
         else:
-            group, _ = Group.objects.get(name='Pet Owners')
+            group, _ = Group.objects.get_or_create(name='Pet Owners')
         instance.groups.add(group)
