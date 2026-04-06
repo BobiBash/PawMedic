@@ -187,14 +187,7 @@ Users are automatically assigned to the correct group based on their role during
 
 ## Deployment
 
-The project is deployed on [Render/Heroku/etc](#). Ensure the following for production:
-
-1. Set `DEBUG = False`
-2. Configure `ALLOWED_HOSTS`
-3. Use a production-grade email backend
-4. Set up a Redis instance for Celery
-5. Collect static files: `python manage.py collectstatic`
-6. Run migrations: `python manage.py migrate`
+TODO
 
 ## Testing
 
