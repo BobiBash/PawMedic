@@ -11,8 +11,12 @@
                     <p class="wrap-break-word line-clamp-2">{{ object.content }}</p>
                 </div>
                 {% if object.author == user %}
-                    <div>
-                        <a href="{% url 'forum-edit-post' pk=object.pk %}" class="bg-blue-500 w-12 rounded-sm border border-black py-1 px-2 text-white hover:underline mt-1">Edit</a>
+                    <div class="flex flex-col">
+                        <a href="{% url 'forum-edit-post' pk=object.pk %}" class="bg-blue-500 w-15 text-center rounded-sm border border-black py-1 px-2 text-white hover:underline mt-1">Edit</a>
+                        <a href="{% url 'forum-delete-post' pk=object.pk %}" class="bg-red-500 w-15 text-center rounded-sm border
+                         border-black py-1 px-2 text-white hover:underline mt-1">
+                            Delete
+                        </a>
                     </div>
                 {% endif %}
             </div>

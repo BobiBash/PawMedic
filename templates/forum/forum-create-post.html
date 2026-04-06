@@ -1,22 +1,9 @@
-{% extends 'base.html' %}
+{% extends 'forum/forum_base.html' %}
 
-{% block content %}
-    <form method="post" novalidate>
-        {% csrf_token %}
-        <div class="flex flex-col gap-4">
-            <div>
-                <label>{{ form.title.label }}</label>
-                <p>{{ form.title }}</p>
-                {{ form.title.errors }}
-            </div>
-            <div>
-                <label>{{ form.content.label }}</label>
-                <p>{{ form.content }}</p>
-                {{ form.content.errors }}
-            </div>
-            <div class="flex justify-center">
-                <button class="p-2 text-lg border rounded-sm bg-gray-300">Submit</button>
-            </div>
-        </div>
-    </form>
+{% block header %}
+    <h1 class="text-2xl font-semibold">Create Post</h1>
+{% endblock %}
+
+{% block buttons %}
+    <button class="p-2 text-lg border rounded-sm bg-gray-300">Submit</button>
 {% endblock %}

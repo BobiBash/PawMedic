@@ -1,7 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {{ object.author.get_full_name }}
-    {{ object.title }}
-    {{ object.content }}
+    <form method="post">
+        {% csrf_token %}
+        <div class="flex flex-col gap-4">
+            <div>
+                <label>Title</label>
+                <p class="p-2 border rounded-sm w-md focus:outline-none">{{ object.title }}</p>
+            </div>
+            <div class="flex flex-col">
+                <label>Content</label>
+                <p class="overflow-y-auto p-1 h-48 border rounded-sm w-md focus:outline-none wrap-break-word" style="resize:none">{{ object.content }}</p>
+            </div>
+            <div class="flex justify-center gap-2">
+                <a href="{% url 'forum-posts-list' %}" class="p-2 text-lg border rounded-sm bg-gray-300">Cancel</a>
+                <button type="submit" class="p-2 text-lg border rounded-sm bg-red-500">Delete</button>
+            </div>
+        </div>
+    </form>
 {% endblock %}

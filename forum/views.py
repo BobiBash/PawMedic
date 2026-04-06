@@ -29,8 +29,9 @@ class ForumCreatePostView(PermissionRequiredMixin, LoginRequiredMixin, CreateVie
 class ForumUpdatePostView(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     model = ForumPost
     template_name = 'forum/forum-edit-post.html'
-    fields = 'title', 'content'
+    form_class = ForumCreatePostForm
     permission_required = 'forum.change_forumpost'
+    success_url = reverse_lazy('forum-posts-list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -59,6 +60,7 @@ class ForumPostDeleteView(PermissionRequiredMixin, LoginRequiredMixin, DeleteVie
     model = ForumPost
     template_name = 'forum/forum-delete-post.html'
     permission_required = 'forum.delete_forumpost'
+    success_url = reverse_lazy('forum-posts-list')
 
     def get_queryset(self):
         return ForumPost.objects.filter(author_id=self.request.user.id)
