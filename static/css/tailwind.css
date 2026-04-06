@@ -7,7 +7,6 @@
     'Noto Color Emoji';
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
     monospace;
-    --color-red-300: oklch(80.8% 0.114 19.571);
     --color-red-500: oklch(63.7% 0.237 25.331);
     --color-red-600: oklch(57.7% 0.245 27.325);
     --color-orange-100: oklch(95.4% 0.038 75.164);
@@ -20,8 +19,11 @@
     --color-green-600: oklch(62.7% 0.194 149.214);
     --color-green-700: oklch(52.7% 0.154 150.069);
     --color-green-800: oklch(44.8% 0.119 151.328);
+    --color-blue-100: oklch(93.2% 0.032 255.585);
     --color-blue-400: oklch(70.7% 0.165 254.624);
     --color-blue-500: oklch(62.3% 0.214 259.815);
+    --color-blue-600: oklch(54.6% 0.245 262.881);
+    --color-blue-700: oklch(48.8% 0.243 264.376);
     --color-slate-400: oklch(70.4% 0.04 256.788);
     --color-gray-100: oklch(96.7% 0.003 264.542);
     --color-gray-200: oklch(92.8% 0.006 264.531);
@@ -253,6 +255,9 @@
   .z-50 {
     z-index: 50;
   }
+  .col-span-2 {
+    grid-column: span 2 / span 2;
+  }
   .container {
     width: 100%;
     @media (width >= 40rem) {
@@ -306,6 +311,9 @@
   }
   .mt-3 {
     margin-top: calc(var(--spacing) * 3);
+  }
+  .mt-4 {
+    margin-top: calc(var(--spacing) * 4);
   }
   .mt-5 {
     margin-top: calc(var(--spacing) * 5);
@@ -451,9 +459,6 @@
   .w-90 {
     width: calc(var(--spacing) * 90);
   }
-  .w-96 {
-    width: calc(var(--spacing) * 96);
-  }
   .w-100 {
     width: calc(var(--spacing) * 100);
   }
@@ -561,6 +566,9 @@
   }
   .gap-2 {
     gap: calc(var(--spacing) * 2);
+  }
+  .gap-3 {
+    gap: calc(var(--spacing) * 3);
   }
   .gap-4 {
     gap: calc(var(--spacing) * 4);
@@ -677,6 +685,9 @@
   .bg-amber-50 {
     background-color: var(--color-amber-50);
   }
+  .bg-blue-100 {
+    background-color: var(--color-blue-100);
+  }
   .bg-blue-400 {
     background-color: var(--color-blue-400);
   }
@@ -694,6 +705,9 @@
   }
   .bg-gray-400 {
     background-color: var(--color-gray-400);
+  }
+  .bg-gray-500 {
+    background-color: var(--color-gray-500);
   }
   .bg-green-100 {
     background-color: var(--color-green-100);
@@ -766,6 +780,9 @@
   }
   .px-10 {
     padding-inline: calc(var(--spacing) * 10);
+  }
+  .py-0\.5 {
+    padding-block: calc(var(--spacing) * 0.5);
   }
   .py-1 {
     padding-block: calc(var(--spacing) * 1);
@@ -876,6 +893,12 @@
   .text-ellipsis {
     text-overflow: ellipsis;
   }
+  .text-blue-600 {
+    color: var(--color-blue-600);
+  }
+  .text-blue-700 {
+    color: var(--color-blue-700);
+  }
   .text-gray-400 {
     color: var(--color-gray-400);
   }
@@ -924,6 +947,9 @@
   }
   .blur {
     --tw-blur: blur(8px);
+    filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
+  }
+  .filter {
     filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
   }
   .transition {

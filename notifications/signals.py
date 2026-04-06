@@ -1,10 +1,7 @@
-from django.core.mail import send_mail
-
-from PawMedic import settings
 from appointments.models import Appointment
 from django.dispatch import receiver
 from django.db.models.signals import post_save
-from .tasks import send_appointment_notification
+from notifications.tasks import send_appointment_notification
 
 
 

@@ -30,9 +30,19 @@
         <p>{{ object.years_of_experience }}</p>
       </div>
       <div>
-      <label  class="text-xl font-semibold">Biography</label>
+        <label class="text-xl font-semibold">Biography</label>
         <p class="w-100 overflow-hidden text-ellipsis">{{ object.bio }}</p>
       </div>
+      {% if object.services.all %}
+      <div>
+        <label class="text-xl font-semibold">Services</label>
+        <div class="flex flex-wrap gap-1">
+          {% for service in object.services.all %}
+            <span class="bg-green-100 text-green-700 px-2 py-0.5 rounded-sm text-sm">{{ service.name }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
     </div>
   </a>
   {% endfor %}

@@ -31,6 +31,18 @@
                     <label class="font-light">Years of experience: </label>
                     <p>{{ vet.years_of_experience }}</p>
                 </div>
+                <div class="flex flex-row gap-2 col-span-2">
+                    <label class="font-light">Services: </label>
+                    {% if vet.services.all %}
+                        <div class="flex flex-wrap gap-1">
+                            {% for service in vet.services.all %}
+                                <span class="bg-green-100 text-green-700 px-2 py-0.5 rounded-sm text-sm">{{ service.name }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-gray-400">No services listed</p>
+                    {% endif %}
+                </div>
               {% endblock %}
             </div>
             <div class="py-2 border-gray-300 border-b">

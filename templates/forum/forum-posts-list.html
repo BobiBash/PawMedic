@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
+{% load time_ago %}
 
 {% block content %}
-    <a class="text-2xl m-2 border rounded-sm p-1 bg-gray-300" href="{% url 'forum-post-create' %}">Create Post + </a>
+    <div class="flex gap-2 m-2">
+        <a class="text-2xl border rounded-sm p-1 bg-gray-300" href="{% url 'forum-post-create' %}">Create Post + </a>
+        <a class="text-2xl border rounded-sm p-1 bg-gray-300" href="{% url 'tag-list' %}">Tags</a>
+    </div>
     <div class="flex m-4 flex-col gap-4 justify-center items-center">
     {% if object_list %}
         {% for object in object_list %}
@@ -9,6 +13,13 @@
                 <div class="flex-wrap flex-col w-90">
                     <a href="{% url 'forum-post-details' pk=object.pk %}" class="text-2xl font-semibold">{{ object.title }}</a>
                     <p class="wrap-break-word line-clamp-2">{{ object.content }}</p>
+                    {% if object.tags.all %}
+                        <div class="flex flex-wrap gap-1 mt-1">
+                            {% for tag in object.tags.all %}
+                                <a href="{% url 'tag-detail' pk=tag.pk %}" class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-sm text-xs hover:underline">#{{ tag.name }}</a>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
                 {% if object.author == user %}
                     <div class="flex flex-col">

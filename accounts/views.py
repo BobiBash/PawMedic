@@ -1,20 +1,27 @@
 from django.conf import settings
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import LoginView, PasswordResetView, LogoutView
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
-from django.views.generic import CreateView, TemplateView
+from django.views.generic import (
+    CreateView,
+    UpdateView,
+    DeleteView,
+    ListView,
+    TemplateView,
+)
 
 from .choices import PawMedicUserType
-from .forms import RegistrationForm, LoginForm, VetProfileForm
+from .forms import RegistrationForm, LoginForm, VetProfileForm, ServiceForm
 from .mixins import AnonymousRequiredMixin
-from .models import EmailConfirmation, VetProfile
+from .models import EmailConfirmation, VetProfile, Service
 
 
 # Create your views here.
+
 
 class RegisterView(CreateView):
     template_name = 'accounts/register_user.html'
@@ -25,8 +32,7 @@ class RegisterView(CreateView):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect('home')
-        return super().dispatch(request,*args, **kwargs)
-
+        return super().dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -51,7 +57,6 @@ class RegisterView(CreateView):
         return redirect('needed-email-confirmation')
 
 
-
 class RegisterVetView(View):
     template_name = 'accounts/register_vet.html'
 
@@ -63,14 +68,13 @@ class RegisterVetView(View):
     def get(self, request):
         user_form = RegistrationForm(role=PawMedicUserType.VET)
         vet_form = VetProfileForm()
-        context = {
-            'form': user_form,
-            'vet_form': vet_form
-        }
+        context = {'form': user_form, 'vet_form': vet_form}
         return render(request, self.template_name, context)
 
     def post(self, request):
-        user_form = RegistrationForm(request.POST, request.FILES, role=PawMedicUserType.VET)
+        user_form = RegistrationForm(
+            request.POST, request.FILES, role=PawMedicUserType.VET
+        )
         vet_form = VetProfileForm(request.POST, request.FILES)
 
         if user_form.is_valid() and vet_form.is_valid():
@@ -98,13 +102,12 @@ class RegisterOptionsView(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect('home')
-        return super().dispatch(request,*args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
 class LoginUserView(LoginView):
     template_name = 'accounts/login.html'
     form_class = LoginForm
     next_page = 'home'
-
 
 
 class ConfirmEmailView(View):
@@ -145,7 +148,6 @@ class PawMedicPasswordResetView(AnonymousRequiredMixin, PasswordResetView):
 
 
 class UpdateProfilePhotoView(LoginRequiredMixin, View):
-
     def post(self, request):
         vet = request.user.vet_profile
         vet.photo = request.FILES.get('photo')
@@ -153,7 +155,6 @@ class UpdateProfilePhotoView(LoginRequiredMixin, View):
         return redirect('vet-profile')
 
 class UpdateProfileBioView(LoginRequiredMixin, View):
-
     def post(self, request):
         vet = request.user.vet_profile
         vet.bio = request.POST.get('bio')
@@ -161,3 +162,30 @@ class UpdateProfileBioView(LoginRequiredMixin, View):
         return redirect('vet-profile')
 
 
+class ServiceListView(LoginRequiredMixin, ListView):
+    model = Service
+    template_name = "accounts/service_list.html"
+    context_object_name = "services"
+
+
+class ServiceCreateView(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
+    model = Service
+    form_class = ServiceForm
+    template_name = "accounts/service_create.html"
+    permission_required = "accounts.add_service"
+    success_url = reverse_lazy("service-list")
+
+
+class ServiceUpdateView(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
+    model = Service
+    form_class = ServiceForm
+    template_name = "accounts/service_update.html"
+    permission_required = "accounts.change_service"
+    success_url = reverse_lazy("service-list")
+
+
+class ServiceDeleteView(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
+    model = Service
+    template_name = "accounts/service_delete.html"
+    permission_required = "accounts.delete_service"
+    success_url = reverse_lazy("service-list")

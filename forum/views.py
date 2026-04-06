@@ -2,10 +2,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 
-from forum.forms import ForumCommentForm, ForumCreatePostForm
-from forum.models import ForumPost, Comment
+from forum.forms import ForumCommentForm, ForumCreatePostForm, TagForm
+from forum.models import ForumPost, Comment, Tag
 
 
 # Create your views here.
@@ -23,7 +23,6 @@ class ForumCreatePostView(PermissionRequiredMixin, LoginRequiredMixin, CreateVie
     def form_valid(self, form):
         form.instance.author_id = self.request.user.id
         return super().form_valid(form)
-
 
 
 class ForumUpdatePostView(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
@@ -103,7 +102,44 @@ class ForumDeleteCommentView(PermissionRequiredMixin, LoginRequiredMixin, View):
     def post(self, request, pk):
         comment = Comment.objects.get(pk=pk, author_id=request.user.id)
         comment.delete()
-        return redirect('forum-post-details', pk=comment.post_id)
+        return redirect("forum-post-details", pk=comment.post_id)
 
 
+class TagListView(LoginRequiredMixin, ListView):
+    model = Tag
+    template_name = "forum/tag_list.html"
+    context_object_name = "tags"
 
+
+class TagCreateView(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
+    model = Tag
+    form_class = TagForm
+    template_name = "forum/tag_create.html"
+    permission_required = "forum.add_tag"
+    success_url = reverse_lazy("tag-list")
+
+
+class TagUpdateView(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
+    model = Tag
+    form_class = TagForm
+    template_name = "forum/tag_update.html"
+    permission_required = "forum.change_tag"
+    success_url = reverse_lazy("tag-list")
+
+
+class TagDeleteView(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
+    model = Tag
+    template_name = "forum/tag_delete.html"
+    permission_required = "forum.delete_tag"
+    success_url = reverse_lazy("tag-list")
+
+
+class TagDetailView(LoginRequiredMixin, DetailView):
+    model = Tag
+    template_name = "forum/tag_detail.html"
+    context_object_name = "tag"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["posts"] = self.object.posts.all()
+        return context

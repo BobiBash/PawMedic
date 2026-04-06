@@ -9,7 +9,7 @@ from django.contrib.auth.forms import (
 from django.core.exceptions import ValidationError
 from django import forms
 from .mixins import PasswordValidationMixin, AnonymousRequiredMixin
-from .models import PawMedicUser, VetProfile
+from .models import PawMedicUser, VetProfile, Service
 from .validators import validate_password_strength, validate_username_taken
 
 
@@ -63,7 +63,7 @@ class VetProfileForm(forms.ModelForm):
 
     class Meta:
         model = VetProfile
-        fields = ("specialization", "years_of_experience", "bio", "photo")
+        fields = ("specialization", "years_of_experience", "bio", "photo", "services")
 
         widgets = {
             "bio": forms.Textarea(
@@ -75,6 +75,7 @@ class VetProfileForm(forms.ModelForm):
                 }
             ),
             "years_of_experience": forms.NumberInput(attrs={}),
+            "services": forms.CheckboxSelectMultiple,
         }
 
 
@@ -150,6 +151,28 @@ class PawMedicPasswordResetForm(AnonymousRequiredMixin, SetPasswordForm):
 
     def _post_clean(self):
         pass
+
+
+class ServiceForm(forms.ModelForm):
+    class Meta:
+        model = Service
+        fields = ("name",)
+
+        widgets = {
+            "name": forms.TextInput(
+                attrs={
+                    "class": "p-2 border rounded-sm w-md focus:outline-none",
+                    "placeholder": "e.g. Surgery",
+                }
+            ),
+        }
+
+        error_messages = {
+            "name": {
+                "required": "Service name is required.",
+                "unique": "This service already exists.",
+            },
+        }
 
 
 class PawMedicPasswordChangeForm(PasswordValidationMixin, PasswordChangeForm):

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex m-4 flex-col gap-4 justify-center items-center">
+    <h1 class="text-2xl font-semibold">#{{ tag.name }}</h1>
+    <p class="text-gray-600">Slug: {{ tag.slug }}</p>
+
+    {% if posts %}
+        <h2 class="text-xl font-semibold mt-4">Posts with this tag:</h2>
+        <div class="flex flex-col gap-3">
+            {% for post in posts %}
+                <div class="flex border p-4 rounded-sm w-md gap-2">
+                    <a href="{% url 'forum-post-details' pk=post.pk %}" class="text-xl font-semibold">{{ post.title }}</a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-gray-500 mt-2">No posts with this tag yet.</p>
+    {% endif %}
+
+    <a href="{% url 'tag-list' %}" class="text-blue-600 hover:underline mt-4">Back to Tags</a>
+</div>
+{% endblock %}

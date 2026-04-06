@@ -6,11 +6,23 @@ from accounts.models import PawMedicUser
 
 # Create your models here.
 
+
+class Tag(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    slug = models.SlugField(unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class ForumPost(models.Model):
     author = models.ForeignKey(PawMedicUser, on_delete=models.CASCADE, related_name='posts')
     title = models.CharField(max_length=200)
     content = models.TextField(validators=[MinLengthValidator(30,
                                                               message='Content needs to be at least 30 characters long.')])
+    tags = models.ManyToManyField(Tag, related_name="posts", blank=True)
+    created_on = models.DateField(auto_now_add=True)
+    updated_on = models.DateField(auto_now=True)
 
 class Comment(models.Model):
     post = models.ForeignKey(ForumPost, on_delete=models.CASCADE, related_name='comments')
