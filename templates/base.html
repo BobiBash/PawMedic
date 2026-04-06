@@ -24,6 +24,9 @@
                 <a href="{% url 'home' %}">Home</a>
                 <a href="https://github.com/BobiBash">Github</a>
                 <a>About</a>
+                <a href="{% url 'vets-list' %}">Veterinarians</a>
+                <a href="{% url 'pets' %}">My Pets</a>
+                <a href="{% url 'forum-posts-list' %}">Forum</a>
             </div>
             <div class="flex flex-row gap-4 ml-auto font-semibold text-xl">
                 {% if not user.is_authenticated %}
