@@ -181,7 +181,7 @@ Users are automatically assigned to the correct group based on their role during
 - XSS prevention via Django's auto-escaping
 - SQL injection prevention via Django ORM
 - Password validation with strength checks
-- Email confirmation required for account activation
+- Email confirmation required for account activation.
 - Sensitive credentials stored in environment variables
 - Permission-based access control on all views.
 
