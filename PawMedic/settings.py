@@ -140,8 +140,8 @@ DATABASES = {
         "NAME": "pawmedic_db",
         "USER": os.getenv("DB_USER"),
         "PASSWORD": os.getenv("DB_PASSWORD"),
-        "HOST": "127.0.0.1",
-        "PORT": "5432",
+        "HOST": os.getenv("DB_HOST"),
+        "PORT": os.getenv("DB_PORT"),
     }
 }
 
