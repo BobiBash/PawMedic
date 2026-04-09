@@ -19,7 +19,7 @@ class ForumPost(models.Model):
     content = models.TextField(validators=[MinLengthValidator(30,
                                                               message='Content needs to be at least 30 characters long.')])
     tags = models.ManyToManyField(Tag, related_name="posts", blank=True)
-    created_on = models.DateField(auto_now_add=True)
+    created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateField(auto_now=True)
 
 class Comment(models.Model):

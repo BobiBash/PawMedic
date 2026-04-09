@@ -8,16 +8,13 @@ from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import (
     CreateView,
-    UpdateView,
-    DeleteView,
-    ListView,
     TemplateView,
 )
 
 from .choices import PawMedicUserType
-from .forms import RegistrationForm, LoginForm, VetProfileForm, ServiceForm
+from .forms import RegistrationForm, LoginForm, VetProfileForm
 from .mixins import AnonymousRequiredMixin
-from .models import EmailConfirmation, VetProfile, Service
+from .models import EmailConfirmation, VetProfile
 
 
 # Create your views here.
@@ -174,31 +171,3 @@ class UpdateProfileBioView(LoginRequiredMixin, View):
         vet.save()
         return redirect('vet-profile')
 
-
-class ServiceListView(LoginRequiredMixin, ListView):
-    model = Service
-    template_name = "accounts/service_list.html"
-    context_object_name = "services"
-
-
-class ServiceCreateView(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
-    model = Service
-    form_class = ServiceForm
-    template_name = "accounts/service_create.html"
-    permission_required = "accounts.add_service"
-    success_url = reverse_lazy("service-list")
-
-
-class ServiceUpdateView(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
-    model = Service
-    form_class = ServiceForm
-    template_name = "accounts/service_update.html"
-    permission_required = "accounts.change_service"
-    success_url = reverse_lazy("service-list")
-
-
-class ServiceDeleteView(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
-    model = Service
-    template_name = "accounts/service_delete.html"
-    permission_required = "accounts.delete_service"
-    success_url = reverse_lazy("service-list")

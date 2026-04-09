@@ -3,7 +3,7 @@ from django.contrib import admin
 # Register your models here.
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import PawMedicUser, VetProfile, EmailConfirmation, Service
+from .models import PawMedicUser, VetProfile, EmailConfirmation
 
 
 @admin.register(PawMedicUser)
@@ -23,8 +23,3 @@ class VetProfileAdmin(admin.ModelAdmin):
 class EmailConfirmationAdmin(admin.ModelAdmin):
     list_display = ('user', 'token', 'created_at')
 
-
-@admin.register(Service)
-class ServiceAdmin(admin.ModelAdmin):
-    list_display = ('name',)
-    search_fields = ('name',)

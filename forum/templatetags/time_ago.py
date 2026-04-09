@@ -1,4 +1,6 @@
 from datetime import datetime
+from time import strptime, strftime
+
 from django import template
 
 register = template.Library()
@@ -6,14 +8,8 @@ register = template.Library()
 
 @register.filter
 def posted_time_ago(value):
-    if not value:
-        return ""
-
-    now = datetime.now()
-    if isinstance(value, datetime):
-        diff = now - value
-    else:
-        diff = now - datetime.combine(value, datetime.min.time())
+    new_val = value.replace(tzinfo=None)
+    diff = datetime.now() - new_val
 
     seconds = diff.total_seconds()
     minutes = seconds / 60

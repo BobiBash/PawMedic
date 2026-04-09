@@ -93,16 +93,4 @@ urlpatterns = [
     path(
         'vet/update-bio/', views.UpdateProfileBioView.as_view(), name='update-vet-bio'
     ),
-    path('services/', views.ServiceListView.as_view(), name='service-list'),
-    path('services/create/', views.ServiceCreateView.as_view(), name='service-create'),
-    path(
-        'services/<int:pk>/edit/',
-        views.ServiceUpdateView.as_view(),
-        name='service-update',
-    ),
-    path(
-        'services/<int:pk>/delete/',
-        views.ServiceDeleteView.as_view(),
-        name='service-delete',
-    ),
 ]

@@ -22,13 +22,6 @@ class EmailConfirmation(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 
-class Service(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-
-    def __str__(self):
-        return self.name
-
-
 class VetProfile(models.Model):
     user = models.OneToOneField(PawMedicUser, on_delete=models.CASCADE, related_name='vet_profile')
     specialization = models.CharField(max_length=100)
@@ -37,7 +30,6 @@ class VetProfile(models.Model):
     photo = models.ImageField(upload_to='vet_photos/', blank=True, null=True)
     is_published = models.BooleanField(default=False)
     slug = AutoSlugField(populate_from='get_fullname', unique=True)
-    services = models.ManyToManyField(Service, related_name="vets", blank=True)
 
     def get_fullname(self):
         return f"{self.user.first_name} {self.user.last_name}"

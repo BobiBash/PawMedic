@@ -11,7 +11,10 @@
         {% for object in object_list %}
             <div class="flex border p-4 rounded-sm w-md gap-2">
                 <div class="flex-wrap flex-col w-90">
+                <div class="flex row items-center gap-2">
                     <a href="{% url 'forum-post-details' pk=object.pk %}" class="text-2xl font-semibold">{{ object.title }}</a>
+                    <p>{{ object.created_on|posted_time_ago }}</p>
+                </div>
                     <p class="wrap-break-word line-clamp-2">{{ object.content }}</p>
                     {% if object.tags.all %}
                         <div class="flex flex-wrap gap-1 mt-1">
