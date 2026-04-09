@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load vet_card %}
 
 {% block content %}
     <form method="get" action="{% url 'vet-search' %}" class="relative mt-10">
@@ -6,37 +7,8 @@
         <div class="bg-white flex flex-col border border-t-0 w-md rounded-b-sm hidden absolute" id="results"></div>
     </form>
 <div class="p-2 gap-4 flex flex-col m-10">
-    {% for object in object_list %}
-        {% if object.is_published %}
-            <a href="{% url 'vets-detail' slug=object.slug pk=object.pk %}" class="border rounded-sm p-2 flex h-60 w-2xl gap-4 bg-orange-100">
-            <div class="flex w-fit flex-col">
-              <div class="flex flex-row justify-center gap-2 font-semibold text-lg">
-                <p>{{ object.user.first_name }}</p>
-                <p>{{ object.user.last_name }}</p>
-              </div>
-              {% if object.photo %}
-                <img class="mt-3 border rounded-sm h-45 w-50 object-cover" src="{{ object.photo.url }}">
-              {% else %}
-                <div id="imagePreviewDiv" class="mt-3 h-45 w-50 mx-auto rounded-sm border bg-gray-100 flex items-center justify-center text-gray-400">No photo</div>
-                <img id="ImagePreview" class="h-45 w-50 rounded-full hidden" src="">
-              {% endif %}
-            </div>
-            <div class=" w-md gap-2 flex flex-col flex-wrap">
-              <div>
-                <label class="text-xl font-semibold">Specialization</label>
-                <p>{{ object.specialization }}</p>
-              </div>
-              <div>
-                <label class="text-xl font-semibold">Years of experience</label>
-                <p>{{ object.years_of_experience }}</p>
-              </div>
-              <div>
-                <label class="text-xl font-semibold">Biography</label>
-                <p class="w-100 overflow-hidden text-ellipsis">{{ object.bio }}</p>
-              </div>
-            </div>
-            </a>
-        {% endif %}
+    {% for vet in vets %}
+        {% vet_card vet %}
     {% endfor %}
   <div class="inline mx-auto gap-2">
     {% if page_obj.has_previous %}

@@ -19,6 +19,7 @@ class VetListView(LoginRequiredMixin, ListView):
     model = VetProfile
     template_name = 'vets/vets-list.html'
     paginate_by = 10
+    context_object_name = 'vets'
 
     def get_queryset(self):
         return VetProfile.objects.exclude(is_published=False)

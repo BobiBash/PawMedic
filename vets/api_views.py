@@ -1,5 +1,6 @@
 from rest_framework import generics, filters
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.response import Response
 
 from accounts.choices import PawMedicUserType
 from accounts.models import PawMedicUser
@@ -8,6 +9,7 @@ from vets.serializers import VetSerializer
 
 class VetSearchPagination(PageNumberPagination):
     page_size = 5
+
 class VetSearchApiView(generics.ListAPIView):
     serializer_class = VetSerializer
     pagination_class = VetSearchPagination
