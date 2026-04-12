@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form method="post" novalidate class="flex flex-col gap-2">
+        {% csrf_token %}
+        <div>
+            <label>{{ form.title.label }}</label>
+            <div>{{ form.title }}</div>
+            <div>{{ form.title.errors }}</div>
+            <p class="text-end" id="title_char_count"></p>
+        </div>
+        <div>
+            <label>{{ form.issue.label }}</label>
+            <div>{{ form.issue }}</div>
+            <div>{{ form.issue.errors }}</div>
+            <p class="text-end" id="content_char_count"></p>
+        </div>
+        <div class="w-sm text-center">
+            <button class="border p-2 rounded-sm bg-gray-300 hover:bg-gray-400" type="submit">Submit Report</button>
+        </div>
+    </form>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        const title = document.getElementById("id_title")
+        const content = document.getElementById("id_issue")
+
+        const title_char_count = document.getElementById("title_char_count")
+        const content_char_count = document.getElementById("content_char_count")
+        title_char_count.textContent = "0/30"
+        content_char_count.textContent = "0/2000"
+
+        title.addEventListener('input', () => {
+            title_char_count.textContent = title.value.length + "/30"
+        })
+
+        content.addEventListener('input', () => {
+            content_char_count.textContent = content.value.length + "/2000"
+        })
+
+        function setCount() {
+            title_char_count.textContent = title.value.length + "/30"
+            content_char_count.textContent = content.value.length + "/2000"
+        }
+        window.onload = setCount;
+
+    </script>
+{% endblock %}

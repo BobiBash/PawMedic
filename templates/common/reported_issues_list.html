@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="flex flex-col gap-2">
+        {% for issue in issues_list %}
+            <a href="{% url 'reported-issue-detail' pk=issue.id %}" class="flex border border-red-500 cursor-pointer rounded-sm p-1 gap-2 w-md justify-items-stretch">
+                <div class="flex flex-col w-xs border-r border-gray-400 p-1">
+                    <div class="flex">
+                        <label class="font-semibold">Title: </label>
+                        <p class="ms-1">{{ issue.title }}</p>
+                    </div>
+                    <div class="flex">
+                        <label class="font-semibold">Content: </label>
+                        <p class="ms-1 break-all line-clamp-2">{{ issue.issue }}</p>
+                    </div>
+                </div>
+                <div class="flex flex-col w-2xs justify-evenly text-md p-1">
+                    <div class="flex">
+                        <label class="font-semibold">Created by: </label>
+                        <p class="ms-1">{{ issue.user.get_fullname }}</p>
+                    </div>
+                   <div class="flex">
+                        <label class="font-semibold">Created at: </label>
+                        <p class="ms-1">{{ issue.created_at }}</p>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}

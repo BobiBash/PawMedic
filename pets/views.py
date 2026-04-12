@@ -30,7 +30,6 @@ class AddPet(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.owner_id = self.request.user.id
-        print(form)
         return super().form_valid(form)
 
 class EditPet(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):

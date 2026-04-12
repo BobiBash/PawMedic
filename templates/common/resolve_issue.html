@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form method="post" class="flex flex-col border rounded-sm p-4 w-2xl gap-2">
+        {% csrf_token %}
+        <div class="flex flex-col">
+            <label>Subject:</label>
+            <input id="subject" type="text" name="subject" required class="border rounded-sm p-1 focus:outline-none">
+        </div>
+        <div class="flex flex-col">
+            <label>Message:</label>
+            <textarea name="message" cols="30" rows="15" style="resize:none" class="border rounded-sm focus:outline-none p-1" required></textarea>
+        </div>
+        <button type="submit" class="mx-auto border text-lg rounded-sm px-2 py-1 bg-gray-500 text-white border-black">Send & Resolve</button>
+    </form>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        const subjectInput = document.getElementById('subject')
+        const Title = '{{ title }}'
+        const issueNumber = '{{ pk }}'
+
+        subjectInput.value = `Resolved issue ${issueNumber} - ` + `'${Title}'`
+    </script>
+{% endblock %}

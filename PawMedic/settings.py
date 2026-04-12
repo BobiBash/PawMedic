@@ -39,10 +39,10 @@ CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 
 CELERY_BEAT_SCHEDULE = {
-    "cleanup-expired-appointments": {
+    "clean-expired-appointments": {
         "task": "appointments.tasks.clean_expired_appointments",
         "schedule": 86400.0,
-    },
+    }
 }
 
 # Application definition
@@ -50,19 +50,19 @@ CELERY_BEAT_SCHEDULE = {
 AUTH_USER_MODEL = "accounts.PawMedicUser"
 
 # email settings
-# EMAIL_HOST = "smtp.gmail.com"
-# EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
-# EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-# EMAIL_USE_TLS = True
-# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-# EMAIL_PORT = 587
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+EMAIL_USE_TLS = True
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_PORT = 587
 
 # MailHog (for local testing without sending real emails)
 # Uncomment the lines below and comment out the Gmail settings above
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = 1025
-EMAIL_USE_TLS = False
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'localhost'
+# EMAIL_PORT = 1025
+# EMAIL_USE_TLS = False
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # CLOUDINARY
 CLOUDINARY_STORAGE = {
