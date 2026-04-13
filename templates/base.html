@@ -5,6 +5,8 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PawMedic - Your trusted veterinary care platform">
     <title>PawMedic</title>
     {% tailwind_css %}
     {% block extra_head %}{% endblock %}
@@ -17,48 +19,117 @@
     <link rel="stylesheet" href="{% static 'styles.css' %}">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </head>
-<body class="flex flex-col bg-gray-100 min-h-screen">
+<body class="flex flex-col bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen font-nunito">
     <div class="sticky top-0 z-50">
-        <nav class="flex flex-row bg-green-200 p-5 sticky top-0 gap-4 shadow-lg">
-            <div class="flex flex-row gap-4 font-semibold text-xl">
-                <a href="{% url 'home' %}">Home</a>
-                <a href="https://github.com/BobiBash">Github</a>
-                <a>About</a>
-                <a href="{% url 'vets-list' %}">Veterinarians</a>
-                <a href="{% url 'pets' %}">My Pets</a>
-                <a href="{% url 'forum-posts-list' %}">Forum</a>
+        <nav class="flex flex-col md:flex-row items-center justify-between bg-gradient-to-r from-green-500 to-emerald-600 px-4 py-4 md:px-8 shadow-xl">
+            <div class="flex items-center space-x-2 mb-4 md:mb-0">
+                <i class="fas fa-paw text-white text-2xl"></i>
+                <a href="{% url 'home' %}" class="text-white text-2xl font-bold tracking-tight hover:text-gray-100 transition-colors duration-200">PawMedic</a>
             </div>
-            <div class="flex flex-row gap-4 ml-auto font-semibold text-xl">
+            
+            <div class="flex flex-wrap justify-center gap-4 md:gap-6 text-white font-medium">
+                <a href="{% url 'home' %}" class="hover:text-gray-100 transition-colors duration-200 px-3 py-1 rounded-lg hover:bg-white/10">Home</a>
+                <a href="{% url 'about' %}" class="hover:text-gray-100 transition-colors duration-200 px-3 py-1 rounded-lg hover:bg-white/10">About</a>
+                <a href="{% url 'vets-list' %}" class="hover:text-gray-100 transition-colors duration-200 px-3 py-1 rounded-lg hover:bg-white/10">Veterinarians</a>
+                <a href="{% url 'pets' %}" class="hover:text-gray-100 transition-colors duration-200 px-3 py-1 rounded-lg hover:bg-white/10">My Pets</a>
+                <a href="{% url 'forum-posts-list' %}" class="hover:text-gray-100 transition-colors duration-200 px-3 py-1 rounded-lg hover:bg-white/10">Forum</a>
+                <a href="https://github.com/BobiBash" target="_blank" class="hover:text-gray-100 transition-colors duration-200 px-3 py-1 rounded-lg hover:bg-white/10">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+            </div>
+            
+            <div class="flex items-center gap-4 mt-4 md:mt-0">
                 {% if not user.is_authenticated %}
-                    <a href="{% url 'register' %}">Sign up</a>
-                    <a href="{% url 'login' %}">Sign in</a>
+                    <a href="{% url 'login' %}" class="text-white hover:text-gray-100 transition-colors duration-200 px-4 py-2 rounded-lg hover:bg-white/10">Sign in</a>
+                    <a href="{% url 'register' %}" class="bg-white text-emerald-600 hover:bg-gray-100 transition-colors duration-200 px-4 py-2 rounded-lg font-semibold shadow-md hover:shadow-lg">Sign up</a>
                 {% else %}
-                    {% if user.role == 'OWNER' %}
-                        <a href="{% url 'user-profile' %}">Profile</a>
-                    {% else %}
-                        <a href="{% url 'vet-profile' %}">Profile</a>
-                    {% endif %}
+                    <div class="relative group">
+                        <button class="flex items-center w-42 gap-2 text-white hover:text-gray-100 transition-colors duration-200 px-4 py-2 rounded-lg hover:bg-white/10">
+                            <i class="fas fa-user-circle"></i>
+                            <span>{{ user.username|truncatechars:15 }}</span>
+                            <i class="fas fa-chevron-down text-sm"></i>
+                        </button>
+                        <div class="absolute right-0 w-42 bg-white rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 group-hover:delay-300">
+                            <div class="">
+                                {% if user.role == 'OWNER' %}
+                                    <a href="{% url 'user-profile' %}" class="block px-4 py-3 text-gray-700 hover:bg-emerald-50 hover:text-emerald-600 transition-colors duration-150">
+                                        <i class="fas fa-user mr-2"></i>Profile
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'vet-profile' %}" class="block px-4 py-3 text-gray-700 hover:bg-emerald-50 hover:text-emerald-600 transition-colors duration-150">
+                                        <i class="fas fa-user-md mr-2"></i>Profile
+                                    </a>
+                                {% endif %}
+                                <div class="border-t border-gray-100"></div>
+                                <a href="{% url 'logout' %}" class="block px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors duration-150">
+                                    <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 {% endif %}
             </div>
         </nav>
-        <div class="flex justify-center">
-            {% block navbar %}
-            {% endblock %}
+        
+        <div class="bg-white/80 backdrop-blur-sm shadow-sm">
+            <div class="container mx-auto px-4 py-2">
+                {% block navbar %}
+                {% endblock %}
+            </div>
         </div>
-
     </div>
-    <main class="grow grid place-items-center">
+    
+    <main class="grow container flex flex-col items-center mx-auto px-4 py-8">
+        
+        {% block breadcrumbs %}
+        {% endblock %}
+        
+        {% block hero %}
+        {% endblock %}
+        
         {% block content %}
         {% endblock %}
     </main>
 
-    <footer class="bg-green-200 shadow-lg">
-        <div class="flex items-center justify-center px-4 py-4 text-center">
-            <div class="w-1/3"></div>
-            <div class="w-1/3 text-center text-gray-600">&copy; 2026 PawMedic</div>
-            <div class="w-1/3 text-right text-lg font-semibold">
-                <a href="{% url 'report-issue' %}">Report Issue</a>
+    <footer class="bg-gray-900 text-gray-400 mt-12 py-2 flex flex-col">
+        <div class="container mx-auto px-6 w-5xl">
+            <div class="w-5xl grid grid-cols-3">
+
+                <!-- Brand -->
+                <div>
+                    <div class="flex items-center space-x-2 mb-2">
+                        <i class="fas fa-paw text-emerald-400"></i>
+                        <span class="text-white font-bold">PawMedic</span>
+                    </div>
+                    <p class="text-sm text-gray-500">Connecting pet owners with trusted veterinarians.</p>
+                    <div class="flex space-x-3 mt-3">
+                        <a href="https://github.com/BobiBash" target="_blank" class="hover:text-white transition-colors duration-200"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-sm font-semibold justify-center flex text-emerald-400 mb-2">Quick Links</h4>
+                    <ul class="flex flex-col text-sm justify-center">
+                        <a href="{% url 'home' %}" class="hover:text-white transition-colors duration-200">Home</a>
+                        <a href="{% url 'about' %}" class="hover:text-white transition-colors duration-200">About</a>
+                        <a href="{% url 'vets-list' %}" class="hover:text-white transition-colors duration-200">Veterinarians</a>
+                        <a href="{% url 'forum-posts-list' %}" class="hover:text-white transition-colors duration-200">Forum</a>
+                    </ul>
+                </div>
+
+                <!-- Support -->
+                <div>
+                    <h4 class="text-sm font-semibold flex justify-center text-emerald-400 mb-2">Support</h4>
+                    <ul class="text-sm">
+                        <li><a href="{% url 'report-issue' %}" class="hover:text-white transition-colors duration-200">Report an Issue</a></li>
+                    </ul>
+                </div>
+
             </div>
+        </div>
+        <div class="border-t border-gray-800 mt-2 p-4 text-center text-xs text-gray-600">
+            © 2026 PawMedic — Made with <i class="fas fa-heart text-red-400"></i> for pet lovers
         </div>
     </footer>
 

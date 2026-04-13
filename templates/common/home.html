@@ -1,12 +1,97 @@
 {% extends 'base.html' %}
 
+{% block hero %}
+<div class="bg-gradient-to-r from-emerald-500 to-green-600 rounded-2xl shadow-2xl overflow-hidden mb-12 animate-fade-in">
+    <div class="px-8 py-12 md:px-16 md:py-20 text-center text-white">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">Welcome to PawMedic</h1>
+        <p class="text-xl md:text-2xl mb-8 opacity-90">Your trusted veterinary care platform</p>
+        <div class="flex flex-wrap justify-center gap-4">
+            <a href="{% url 'vets-list' %}" class="bg-white text-emerald-600 hover:bg-gray-100 px-6 py-3 rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300">
+                <i class="fas fa-user-md mr-2"></i>Find Veterinarians
+            </a>
+            <a href="{% url 'pets' %}" class="bg-white/20 hover:bg-white/30 text-white border-2 border-white px-6 py-3 rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300">
+                <i class="fas fa-paw mr-2"></i>My Pets
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
 {% block content %}
-<div class="flex flex-col items-center mx-auto px-4 py-8">
-    <h1 class="text-4xl font-bold mb-6 text-center">Welcome to PawMedic</h1>
-    <div class="grid grid-cols-3 text-center">
-        <a href="{% url 'vets-list' %}" class="text-2xl p-2 rounded-sm">Veterinarians</a>
-        <a href="{% url 'pets' %}" class="text-2xl p-2 rounded-sm">My Pets</a>
-        <a href="{% url 'forum-posts-list' %}" class="text-2xl p-2 rounded-sm">Forum</a>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+    <div class="bg-white rounded-2xl shadow-xl p-8 text-center hover:shadow-2xl transition-all duration-300">
+        <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="fas fa-user-md text-3xl text-emerald-600"></i>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-gray-800">Find Vets</h3>
+        <p class="text-gray-600 mb-6">Connect with qualified veterinarians in your area for appointments and consultations.</p>
+        <a href="{% url 'vets-list' %}" class="inline-block bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200">
+            Browse Vets
+        </a>
+    </div>
+    
+    <div class="bg-white rounded-2xl shadow-xl p-8 text-center hover:shadow-2xl transition-all duration-300">
+        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="fas fa-paw text-3xl text-blue-600"></i>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-gray-800">Manage Pets</h3>
+        <p class="text-gray-600 mb-6">Keep track of your pets' medical records, appointments, and health information.</p>
+        <a href="{% url 'pets' %}" class="inline-block bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200">
+            View Pets
+        </a>
+    </div>
+    
+    <div class="bg-white rounded-2xl shadow-xl p-8 text-center hover:shadow-2xl transition-all duration-300">
+        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="fas fa-comments text-3xl text-purple-600"></i>
+        </div>
+        <h3 class="text-2xl font-bold mb-4 text-gray-800">Community Forum</h3>
+        <p class="text-gray-600 mb-6">Join discussions, ask questions, and share experiences with other pet owners.</p>
+        <a href="{% url 'forum-posts-list' %}" class="inline-block bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200">
+            Visit Forum
+        </a>
+    </div>
+</div>
+
+<div class="bg-gradient-to-r from-gray-50 to-white rounded-2xl shadow-xl p-8 border border-gray-200">
+    <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Why Choose PawMedic?</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0">
+                <i class="fas fa-shield-alt text-2xl text-emerald-500"></i>
+            </div>
+            <div>
+                <h4 class="text-xl font-semibold mb-2 text-gray-800">Trusted Professionals</h4>
+                <p class="text-gray-600">All veterinarians are verified and licensed to ensure quality care for your pets.</p>
+            </div>
+        </div>
+        <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0">
+                <i class="fas fa-calendar-check text-2xl text-emerald-500"></i>
+            </div>
+            <div>
+                <h4 class="text-xl font-semibold mb-2 text-gray-800">Easy Scheduling</h4>
+                <p class="text-gray-600">Book appointments online with available time slots that fit your schedule.</p>
+            </div>
+        </div>
+        <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0">
+                <i class="fas fa-file-medical text-2xl text-emerald-500"></i>
+            </div>
+            <div>
+                <h4 class="text-xl font-semibold mb-2 text-gray-800">Digital Records</h4>
+                <p class="text-gray-600">Keep all your pet's medical history organized and accessible in one place.</p>
+            </div>
+        </div>
+        <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0">
+                <i class="fas fa-users text-2xl text-emerald-500"></i>
+            </div>
+            <div>
+                <h4 class="text-xl font-semibold mb-2 text-gray-800">Supportive Community</h4>
+                <p class="text-gray-600">Connect with other pet owners for advice, support, and shared experiences.</p>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

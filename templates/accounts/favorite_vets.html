@@ -1,7 +1,7 @@
-{% extends 'base.html' %}
+{% extends 'accounts/profile_card.html' %}
 
 {% block content %}
-    <h1 class="absolute top-25 h-10 justify-center text-3xl font-bold">Favorite Veterinarians</h1>
+    <h1 class="mb-10 h-10 justify-center text-3xl font-bold">Favorite Veterinarians</h1>
     <div>
         {% for object in object_list %}
             <div class="border flex rounded-sm bg-white">

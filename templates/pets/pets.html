@@ -2,7 +2,7 @@
 {% load pet_card %}
 
 {% block content %}
-<div class="absolute top-45">
+<div class="mx-auto my-auto">
     <a class="flex mx-auto justify-center p-2 bg-green-200 hover:bg-green-300 mb-15 w-30 border rounded-sm text-xl" href="{% url 'add-pet' %}">Add Pet +</a>
     <div class="grid grid-cols-4 gap-4 w-300">
         {% for pet in object_list %}
