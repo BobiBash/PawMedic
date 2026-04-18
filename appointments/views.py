@@ -1,17 +1,21 @@
+import json
 from datetime import datetime, timedelta
 from time import strftime, strptime
 
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.cache import never_cache
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
 from django.views import View
-import json
+
 
 from django.views.generic import CreateView, TemplateView, ListView
+from pygments.lexer import default
 
-from accounts.choices import PawMedicUserType
-from appointments.models import AppointmentSlot, Appointment
+from appointments.forms import VetScheduleForm
+from appointments.models import Appointment, AppointmentSlot
 from pets.models import Pet
 
 
@@ -19,38 +23,38 @@ from pets.models import Pet
 class VetScheduleView(PermissionRequiredMixin, LoginRequiredMixin, View):
     permission_required = "appointments.change_appointmentslot"
 
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.role != PawMedicUserType.VET:
-            return redirect("home")
-        return super().dispatch(request, *args, **kwargs)
-
     def get(self, request, slug):
-        slots = AppointmentSlot.objects.filter(vet_id=request.user.vet_profile).values(
-            "date", "time"
+
+        form = VetScheduleForm()
+
+        registered_timeslots = AppointmentSlot.objects.filter(vet_id=request.user.vet_profile.id).values(
+            'date', 'time'
         )
 
-        return render(
-            request,
-            "appointments/manage_schedule.html",
-            {
-                "slots": json.dumps(list(slots), default=str),
-                "vet_slug": request.user.vet_profile.slug,
-            },
-        )
+        return render(request, "appointments/manage_schedule.html", context={
+            "form": form,
+            "slots": json.dumps(list(registered_timeslots), default=str)
+        })
 
     def post(self, request, slug):
-        vet_id = request.user.vet_profile.id
-        print(vet_id)
-        date = request.POST.get("date")
-        times = request.POST.getlist("time")
-        AppointmentSlot.objects.filter(vet_id=vet_id, date=date).delete()
 
-        for time in times:
-            datetime_str = date + " " + time
-            formatted_data = parse_datetime(datetime_str)
-            formatted_data = timezone.make_aware(formatted_data)
-            AppointmentSlot.objects.get_or_create(date=date, time=time, vet_id=vet_id, date_and_time=formatted_data)
-        return redirect("vet-schedule", slug)
+        form = VetScheduleForm(request.POST)
+
+
+        if form.is_valid():
+            vet_id = request.user.id
+            AppointmentSlot.objects.filter(vet_id=vet_id).delete()
+            date = form.cleaned_data['selected_date']
+            times = form.cleaned_data['available_slots']
+            for time in times:
+                formatted_time = datetime.strptime(time, '%H:%M').time()
+                formatted_datetime = datetime.combine(date, formatted_time)
+                AppointmentSlot.objects.create(date=date, time=formatted_time, vet_id=vet_id, date_and_time=formatted_datetime)
+            return redirect('vet-schedule', slug=slug)
+
+        messages.error(request, "No timeslots selected. Please select at least one available timeslot to continue.")
+        return redirect('vet-schedule', slug=slug)
+
 
 
 class UserMakeAppointMentView(PermissionRequiredMixin, LoginRequiredMixin, View):

@@ -26,5 +26,16 @@
                 </div>
             </a>
         {% endfor %}
+        <div class="inline mx-auto gap-2">
+            {% if page_obj.has_previous %}
+                <a class="border py-1 px-2 rounded-sm bg-gray-200" href="?page=1">First</a>
+                <a class="border py-1 px-2 rounded-sm bg-gray-200" href="?page={{ page_obj.prev_page_number }}">Previous</a>
+            {% endif %}
+              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+              {% if page_obj.has_next %}
+              <a class="border py-1 px-2 rounded-sm bg-gray-200" href="?page={{ page_obj.next_page_number }}">Next</a>
+              <a class="border py-1 px-2 rounded-sm bg-gray-200" href="?page=last">Last</a>
+            {% endif %}
+        </div>
     </div>
 {% endblock %}

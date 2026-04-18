@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="border rounded-sm bg-gray-200 flex flex-col w-auto h-auto p-10">
+    <form method="post" class="flex flex-col items-center">
+        {% csrf_token %}
+        <h1 class="text-xl font-semibold mx-auto pb-4">Your Schedule for - {{ date }}</h1>
+        <div class="flex flex-col gap-1">
+            {{ form.available_slots }}
+        </div>
+        <button id="saveBtn" class="bg-blue-400 border w-auto mx-auto rounded-sm py-2 px-4 mt-6" type="submit">Save</button>
+    </form>
+</div>
+{% endblock %}

@@ -45,6 +45,7 @@ CELERY_BEAT_SCHEDULE = {
     }
 }
 
+USE_TZ = False
 # Application definition
 
 AUTH_USER_MODEL = "accounts.PawMedicUser"

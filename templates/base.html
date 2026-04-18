@@ -61,9 +61,10 @@
                                     </a>
                                 {% endif %}
                                 <div class="border-t border-gray-100"></div>
-                                <a href="{% url 'logout' %}" class="block px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors duration-150">
-                                    <i class="fas fa-sign-out-alt mr-2"></i>Logout
-                                </a>
+                                <form method="post" action="{% url 'logout' %}" class="block px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors duration-150">
+                                    {% csrf_token %}
+                                    <i class="fas fa-sign-out-alt mr-2"></i><button type="submit">Logout</button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -111,10 +112,10 @@
                 <div>
                     <h4 class="text-sm font-semibold justify-center flex text-emerald-400 mb-2">Quick Links</h4>
                     <ul class="flex flex-col text-sm justify-center">
-                        <a href="{% url 'home' %}" class="hover:text-white transition-colors duration-200">Home</a>
-                        <a href="{% url 'about' %}" class="hover:text-white transition-colors duration-200">About</a>
-                        <a href="{% url 'vets-list' %}" class="hover:text-white transition-colors duration-200">Veterinarians</a>
-                        <a href="{% url 'forum-posts-list' %}" class="hover:text-white transition-colors duration-200">Forum</a>
+                        <li><a href="{% url 'home' %}" class="hover:text-white transition-colors duration-200">Home</a></li
+                        <li><a href="{% url 'about' %}" class="hover:text-white transition-colors duration-200">About</a></li
+                        <li><a href="{% url 'vets-list' %}" class="hover:text-white transition-colors duration-200">Veterinarians</a></li
+                        <li><a href="{% url 'forum-posts-list' %}" class="hover:text-white transition-colors duration-200">Forum</a></li
                     </ul>
                 </div>
 
@@ -122,6 +123,9 @@
                 <div>
                     <h4 class="text-sm font-semibold flex justify-center text-emerald-400 mb-2">Support</h4>
                     <ul class="text-sm">
+                        {% if perms.common.view_reportedissues %}
+                            <li><a href="{% url 'reported-issues-list' %}" class="hover:text-white transition-colors duration-200 text-lg font-semibold">View issues - moderators only</a></li>
+                        {% endif %}
                         <li><a href="{% url 'report-issue' %}" class="hover:text-white transition-colors duration-200">Report an Issue</a></li>
                     </ul>
                 </div>

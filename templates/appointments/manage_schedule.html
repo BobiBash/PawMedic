@@ -1,58 +1,84 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form class="border bg-gray-200 rounded-sm pt-20 pb-10 px-10 flex flex-col items-center gap-4 w-145 h-80" method="post" action="{% url 'vet-schedule' slug=vet_slug %}">
-  {% csrf_token %}
-  <label class="bg-white relative self-start -ml-10 -mt-20 border-b border-r rounded-sm w-fit"><input type="text" name="date" id="date-input" placeholder="Pick a date"></label>
-  <h1 class="text-2xl" id="header"></h1>
-  <div class="grid grid-flow-col grid-rows-5 gap-x-4 gap-y-2" id="time-slots">
-  </div>
-  <button class="bg-blue-400 border rounded-sm py-1 px-2" type="submit">Save</button>
+<form id="date-form" method="post" class="mx-auto">
+    {% csrf_token %}
+    <div class="flex h-123.5">
+        <input id="selected-date" class="hidden" name="selected_date">
+        <div id="tab-holder" class="flex flex-col border p-2 gap-2 bg-gray-200 rounded-sm rounded-r-none overflow-auto w-fit items-center">
+        </div>
+        <div id="tabs" class="p-4 bg-blue-100 border border-l-0 rounded-r-sm">
+            <h1 id="timeslots-header" class="flex justify-center text-2xl font-semibold mb-10">></h1>
+            {{ form.available_slots }}
+        </div>
+    </div>
+    {% if messages %}
+        {% for message in messages %}
+        <div class="w-fit" id="error-messages">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    <button id="saveBtn" class="bg-blue-400 border w-auto mx-auto flex justify-center rounded-sm py-2 px-4 mt-6" type="submit">Save</button>
 </form>
 {% endblock %}
 
 {% block scripts %}
 <script>
 
+    const next60Days = Array.from({ length: 60 }, (_, i) => {
+        const date = new Date();
+        date.setDate(date.getDate() + i);
+        return date.toLocaleDateString('en-US', {
+          month: 'long',
+          day: 'numeric',
+          year: 'numeric'
+        });
+    });
 
-  const savedSlots = {{ slots|safe }};
+    const tabHolder = document.getElementById('tab-holder')
+    const tabs = document.getElementById('tabs')
+    const header = document.getElementById('timeslots-header')
+    const dateForSubmit = document.getElementById('selected-date')
+    dateForSubmit.value = next60Days[0];
+    console.log(dateForSubmit.value)
 
-  const fp = flatpickr("#date-input", {
-        minDate: 'today',
-        maxDate: new Date().fp_incr(61),
-        altInput: true,
-        altFormat: "F j, Y",
-        dateFormat: "Y-m-d",
-        onChange: function(selectedDates, dateStr) {
-          const alreadySavedTimes = savedSlots
-              .filter(s => s.date == dateStr)
-              .map(s => s.time.slice(0, 5))
-
-            header.textContent = 'Schedule for ' + fp.altInput.value
-            console.log(alreadySavedTimes)
-
-            document.querySelectorAll('input[name="time"]')
-                .forEach(checkbox => {
-                    if (alreadySavedTimes.includes(checkbox.value))
-                        checkbox.checked = true
-                    console.log(checkbox)
-                })
-  }});
-
-  const ALL_SLOTS = ['07:00', '07:30', '08:00', '08:30',  '09:00', '09:30',  '10:00',  '10:30',
-      '11:00', '11:30',  '12:00', '12:30',  '13:00', '13:30',  '14:00', '14:30',  '15:00', '15:30',
-      '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30',]
-  const slotsDiv = document.getElementById('time-slots')
-  const header = document.getElementById('header')
-  const ChosenDate = document.getElementById('date-input')
-
-  console.log(ChosenDate.value)
+        const takenSlots = {{ slots|safe }};
 
 
-  ALL_SLOTS.forEach((timestamp) => {
-    slotsDiv.innerHTML += `<label class="text-xl"><input type='checkbox' name='time' value='${timestamp}'/>${timestamp}</label>`
-  })
 
+    function checkTimesForDate () {
 
+        const SelectDate = new Date(dateForSubmit.value)
+        const year = SelectDate.getFullYear()
+        const month = String(SelectDate.getMonth() + 1).padStart(2, '0')
+        const day = String(SelectDate.getDate()).padStart(2, '0')
+        const DateStr = `${year}-${month}-${day}`;
+
+        const timesForThisDate = takenSlots
+            .filter(slot => slot.date === DateStr)
+            .map(slot => slot.time)
+
+        document.querySelectorAll("input[name='available_slots']").forEach(checkbox => {
+            checkbox.checked = !!timesForThisDate.includes(checkbox.value + ':00');
+        })
+    }
+
+    checkTimesForDate()
+
+    next60Days.forEach((date, i) => {
+        tabHolder.innerHTML += `<div class="border rounded-sm w-35 max-w-45 p-4" data-index="${i}"><span id='date-span'>${date}</span></div>`
+    })
+
+    header.textContent = `Schedule for ${next60Days[0]}`;
+
+    tabHolder.addEventListener('click', (e) => {
+        const tab = e.target.closest('div[data-index]')
+        const index = tab.dataset.index
+        if (!tab) return;
+
+        dateForSubmit.value = next60Days[index]
+        header.textContent = `Schedule for ${tab.innerText}`;
+
+        checkTimesForDate()
+    })
 </script>
 {% endblock %}

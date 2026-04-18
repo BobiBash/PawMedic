@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.generic import TemplateView
 
 from appointments.views import VetScheduleView, UserMakeAppointMentView, UserAppointmentsView
 

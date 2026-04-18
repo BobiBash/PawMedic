@@ -13,3 +13,18 @@ ul {
     width: 100%;
     text-align: center;
 }
+
+#error-messages {
+    margin-top: 0.25rem;
+    background-color: rgb(239 68 68);
+    color: white;
+    font-size: 0.875rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.25rem;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    list-style: none;
+    display: flex;
+    margin-right: auto;
+    margin-left: auto;
+
+}

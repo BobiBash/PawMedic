@@ -12,6 +12,7 @@ from forum.models import ForumPost, Comment, Tag
 class ForumPostsListView(LoginRequiredMixin, ListView):
     model = ForumPost
     template_name = 'forum/forum-posts-list.html'
+    paginate_by = 10
 
 class ForumCreatePostView(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     model = ForumPost

@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse_lazy
@@ -21,12 +21,15 @@ class ReportIssue(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class ReportedIssuesList(LoginRequiredMixin, ListView):
+class ReportedIssuesList(PermissionRequiredMixin, LoginRequiredMixin, ListView):
+    permission_required = "common.view_reportedissues"
     template_name = "common/reported_issues_list.html"
     context_object_name = 'issues_list'
+    paginate_by = 10
     queryset = ReportedIssues.objects.all()
 
-class ReportedIssuesDetail(LoginRequiredMixin, DetailView):
+class ReportedIssuesDetail(PermissionRequiredMixin, LoginRequiredMixin, DetailView):
+    permission_required = 'common.view_reportedissues'
     template_name = "common/reported_issue_detail.html"
     context_object_name = "issue"
 
