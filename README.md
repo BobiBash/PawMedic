@@ -1,204 +1,257 @@
-# PawMedic - Veterinary Pet Care Platform
+# PawMedic
 
-A full-featured Django web application for pet owners and veterinarians. PawMedic allows pet owners to manage their pets, book appointments with vets, and participate in a community forum. Veterinarians can manage their profiles, set availability, and interact with the community.
+A Django-based platform connecting pet owners with veterinarians. Pet owners can manage their pets, browse vet profiles, and book appointments. Vets can manage their schedules and publish their profiles. Background tasks handle email notifications and slot cleanup via Celery.
+
+Built as a final project for the SoftUni Django Advanced course.
+
+---
 
 ## Features
 
-- **User Authentication** — Registration (pet owner / vet), login, logout, email confirmation, password reset
-- **Pet Management** — Full CRUD for pets with photo uploads
-- **Vet Profiles** — Detailed vet profiles with specialization, bio, photo, and services offered
-- **Appointment System** — Vets manage their schedule; owners book appointments
-- **Community Forum** — Create posts, comment, tag posts, edit/delete your content
-- **Tag System** — Categorize forum posts with tags for easy filtering
-- **Service Management** — Vets can list the services they offer
-- **REST API** — Vet search endpoint via Django REST Framework
-- **Async Notifications** — Email notifications via Celery + Redis
-- **Custom User Model** — Extended with email, phone, role, and custom authentication backend
+**For pet owners**
+- Register and verify account via email confirmation
+- Log in with username or email
+- Create, edit, and delete pets
+- Browse and favourite published vet profiles
+- Book appointments from available time slots
+- Participate in the community forum
 
-## Tech Stack
+**For vets**
+- Extended vet profile with photo, bio, and publish/unpublish toggle
+- Manage available appointment slots
+- Forum participation and tag management (via vet group permissions)
 
-- **Backend:** Django 6.0.3, Django REST Framework 3.17.1
-- **Database:** PostgreSQL
-- **Async:** Celery + Redis
-- **Frontend:** Tailwind CSS, Font Awesome, Flatpickr
-- **Styling:** django-tailwind-cli
+**Platform**
+- Custom user model with owner and vet roles, group-assigned on registration
+- Signal-driven Celery email notification on appointment creation
+- Daily Celery Beat task to clean up expired appointment slots
+- DRF-powered vet search endpoint
+- Cloudinary media storage
+- Tailwind CSS styling
 
-## Project Structure
+---
+
+## Tech stack
+
+| Layer | Technology |
+|---|---|
+| Language | Python 3.12+ |
+| Framework | Django 6.0.3 |
+| Database | PostgreSQL |
+| Task queue | Celery + Redis |
+| API | Django REST Framework |
+| Media storage | Cloudinary |
+| Styling | Tailwind CSS |
+
+---
+
+## Project layout
 
 ```
-PawMedic/                 # Main project settings
-├── accounts/             # User auth, profiles, groups, permissions
-├── appointments/         # Appointment booking and scheduling
-├── common/               # Home page and shared utilities
-├── forum/                # Community forum (posts, comments, tags)
-├── notifications/        # Celery tasks and email notifications
-├── pets/                 # Pet management CRUD
-├── vets/                 # Vet listing, search, and DRF API
-├── templates/            # All HTML templates
-├── static/               # Static files (CSS, JS, images)
-├── media/                # User-uploaded media files
+Softuni-Django-advanced-project/
+├── PawMedic/           # Settings, root URLs, Celery bootstrap
+├── accounts/           # Users, vet profiles, auth, groups, password reset
+├── appointments/       # Scheduling, booking, cleanup task
+├── common/             # Home, about, issue reporting
+├── forum/              # Posts, comments, tags
+├── notifications/      # Signal-driven email tasks
+├── pets/               # Pet CRUD
+├── vets/               # Vet directory and search API
+├── templates/          # Global templates
+├── static/             # Compiled frontend assets
+├── assets/             # Tailwind source
+├── media/              # Local media (development only)
+├── populate_db.py      # Seed script
+├── requirements.txt
 └── manage.py
 ```
 
-## Prerequisites
+---
 
-- Python 3.12+
-- PostgreSQL
-- Redis (for Celery)
+## Quick start
 
-## Local Setup
-
-### 1. Clone the Repository
+### 1. Clone and set up a virtual environment
 
 ```bash
-git clone https://github.com/BobiBash/Softuni-Django-advanced-project.git
+git clone <repo-url>
 cd Softuni-Django-advanced-project
-```
 
-### 2. Create and Activate a Virtual Environment
-
-```bash
+# Windows
 python -m venv .venv
-.venv\Scripts\activate   # Windows
-source .venv/bin/activate  # macOS/Linux
+.venv\Scripts\activate
+
+# macOS / Linux
+python -m venv .venv
+source .venv/bin/activate
 ```
 
-### 3. Install Dependencies
+### 2. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Set Up PostgreSQL
+### 3. Configure environment variables
 
-Create a PostgreSQL database named `pawmedic_db` (or change the name in `.env` and `settings.py`):
+Copy the example file and fill in your values:
+
+```bash
+cp .env.example .env
+```
+
+```env
+SECRET_KEY=your_django_secret_key
+
+DB_USER=postgres
+DB_PASSWORD=your_postgres_password
+DB_PORT=5432
+
+REDIS_URL=redis://localhost:6379/0
+
+EMAIL_HOST_USER=your_gmail_address
+EMAIL_HOST_PASSWORD=your_gmail_app_password
+
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+```
+
+### 4. Create the database
 
 ```sql
 CREATE DATABASE pawmedic_db;
 ```
 
-### 5. Configure Environment Variables
-
-Create a `.env` file in the project root with the following variables:
-
-```env
-DB_USER=your_postgres_username
-DB_PASSWORD=your_postgres_password
-EMAIL_HOST_USER=your_gmail_address
-EMAIL_HOST_PASSWORD=your_gmail_app_password
-SECRET_KEY=your_django_secret_key
-REDIS_URL=redis://localhost:6379/0
-```
-
-> **Note:** For Gmail, you need to generate an [App Password](https://support.google.com/accounts/answer/185833). Regular passwords won't work.
->
-> **Alternative — MailHog:** For local testing without sending real emails, you can use [MailHog](https://github.com/mailhog/MailHog). Install and run MailHog, then in `settings.py` comment out the Gmail email settings and uncomment the MailHog block (localhost:1025). Emails will be captured in the MailHog web UI at [http://localhost:8025](http://localhost:8025).
-
-### 6. Run Migrations
+### 5. Apply migrations and create a superuser
 
 ```bash
-python manage.py makemigrations
 python manage.py migrate
-```
-
-> Groups ("Vets" and "Pet Owners") with appropriate permissions are created automatically via a `post_migrate` signal.
-
-### 7. Create a Superuser
-
-```bash
 python manage.py createsuperuser
 ```
 
-### 8. Start the Development Server
+### 6. Run the development server
 
 ```bash
 python manage.py runserver
 ```
 
-Visit [http://127.0.0.1:8000](http://127.0.0.1:8000) in your browser.
+App is available at `http://127.0.0.1:8000/`.
 
-### 9. Start Celery (Optional, for async notifications)
+---
 
-In a separate terminal:
+## Background services
 
+Redis must be running before starting the Celery worker or beat scheduler.
+
+**Start the worker:**
 ```bash
 celery -A PawMedic worker --loglevel=info
 ```
 
-## Optional: Seed the Database
+**Start the beat scheduler** (runs the daily slot cleanup):
+```bash
+celery -A PawMedic beat --loglevel=info
+```
 
-Run the populate script to create sample vet users:
+---
+
+## Seed data
+
+To populate the database with sample records:
 
 ```bash
 python populate_db.py
 ```
 
-## Admin Panel
+---
 
-Access the admin panel at [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/) using your superuser credentials.
+## API
 
-## User Groups and Permissions
+### Vet search
 
-The application defines two user groups with distinct permissions:
+```
+GET /vets/api/vets/?search=<term>
+```
 
-| Group | Permissions |
+Returns published vets matching the search term. Requires a non-empty `search` parameter. Results are paginated (page size 5).
+
+**Example response:**
+```json
+{
+  "count": 1,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "slug": "john-smith",
+      "vet_id": 3,
+      "first_name": "John",
+      "last_name": "Smith"
+    }
+  ]
+}
+```
+
+---
+
+## Roles and permissions
+
+Two groups are created automatically after migration: `Vets` and `Pet Owners`. Users are assigned to a group on registration based on their role field.
+
+| Permission | Pet Owners | Vets |
+|---|---|---|
+| Pet CRUD | ✓ | view only |
+| Appointment booking | ✓ | |
+| Appointment slot management | | ✓ |
+| Vet profile management | | ✓ |
+| Forum CRUD | ✓ | ✓ |
+| Forum tag management | | ✓ |
+| Issue report review | superuser / manual grant | superuser / manual grant |
+
+---
+
+## Data model overview
+
+| Model | Description |
 |---|---|
-| **Vets** | Manage vet profiles, manage appointment slots, full forum CRUD, manage tags, manage services, view pets |
-| **Pet Owners** | Full pet CRUD, full forum CRUD, book and view appointments |
+| `PawMedicUser` | Custom auth user with unique email, phone, and role |
+| `VetProfile` | One-to-one extension of a vet user |
+| `FavoriteVet` | Owner-to-vet favourite relationship |
+| `Pet` | Pet owned by a user |
+| `AppointmentSlot` | Available schedule slot attached to a vet profile |
+| `Appointment` | Booking linking a slot, user, and pet |
+| `ForumPost`, `Comment`, `Tag` | Forum models |
+| `ReportedIssues` | User-submitted platform issue reports |
+| `EmailConfirmation` | Registration confirmation token |
 
-Users are automatically assigned to the correct group based on their role during registration.
-
-## API Endpoints
-
-| Method | URL | Description |
-|---|---|---|
-| GET | `/vets/api/vets/?search=<query>` | Search published vets (JSON) |
-
-## Database Models
-
-| Model | App | Description |
-|---|---|---|
-| PawMedicUser | accounts | Custom user model (extends AbstractUser) |
-| VetProfile | accounts | Vet profile with services (M2M) |
-| Service | accounts | Vet services |
-| EmailConfirmation | accounts | Token-based email verification |
-| Pet | pets | Pet records with owner FK |
-| AppointmentSlot | appointments | Vet availability slots |
-| Appointment | appointments | Booked appointments |
-| ForumPost | forum | Forum posts with tags (M2M) |
-| Tag | forum | Forum post tags |
-| Comment | forum | Forum post comments |
-
-### Relationships
-
-- **Many-to-One (FK):** Pet → User, AppointmentSlot → VetProfile, Appointment → Slot/Vet/Pet, ForumPost → User, Comment → Post/User
-- **Many-to-Many:** VetProfile ↔ Service, ForumPost ↔ Tag
-- **One-to-One:** VetProfile → User, EmailConfirmation → User
-
-## Security
-
-- CSRF protection enabled on all forms
-- XSS prevention via Django's auto-escaping
-- SQL injection prevention via Django ORM.
-- Password validation with strength checks.
-- Email confirmation required for account activation.
-- Sensitive credentials stored in environment variables.
-- Permission-based access control on all views.
-
-## Deployment
-
-TODO
+---
 
 ## Testing
 
-Run the test suite:
+The test suite requires a running local PostgreSQL instance.
 
 ```bash
 python manage.py test
 ```
 
-The project includes 28+ tests covering models, forms, and views.
+The project currently has 24 discovered tests across the app modules. Note: `test.py` in the project root is a scratch file and is not part of the test suite.
+
+---
+
+## Routes
+
+| Path | Description |
+|---|---|
+| `/` | Home page |
+| `/about/` | About page |
+| `/accounts/` | Registration, login, profile, password reset, favourites |
+| `/pets/` | Pet CRUD |
+| `/vets/` | Vet directory, detail pages, search, API |
+| `/appointments/` | Appointments and vet schedule management |
+| `/forum/` | Posts, comments, tags |
+
+---
 
 ## License
 
-This project was developed as part of the SoftUni Django Advanced course final exam.
+Developed as part of the SoftUni Django Advanced course.
