@@ -4,7 +4,7 @@
 
 <form method="post" novalidate enctype="multipart/form-data">
   {% csrf_token %}
-  <div class="flex flex-col gap-2 px-10 py-5 max-h-160 m-10 bg-orange-100 border rounded-sm">
+  <div class="flex flex-col gap-2 px-10 py-5 max-h-200 m-10 bg-orange-100 border rounded-sm">
 
     {% block header %}{% endblock %}
 
@@ -12,8 +12,6 @@
       <div class="flex flex-col">
         {{ field.label_tag }}
         {{ field }}
-        {% block image_field %}
-        {% endblock %}
         {% if field.errors %}
           {% for error in field.errors %}
             <p class="text-red-500 text-lg">{{ error }}</p>
@@ -22,34 +20,34 @@
       </div>
     {% endfor %}
 
+    {% block image_field %}{% endblock %}
+
     {% block button %}{% endblock %}
 
   </div>
 </form>
 {% block scripts %}
     <script>
-        config =
-            {
+            config = {
                 altInput: true,
                 altFormat: "F j, Y",
                 dateFormat: "Y-m-d",
             }
 
         flatpickr("#flatpickr-date", config);
-
     </script>
     <script>
-        const preview = document.getElementById('preview')
+        const preview = document.getElementById('preview');
 
         {% if pet.pet_photo %}
-        preview.classList.remove('hidden')
-        preview.src = '{{ pet.pet_photo.url }}'
+        preview.classList.remove('hidden');
+        preview.src = '{{ pet.pet_photo.url }}';
         {% endif %}
-        document.getElementById('id_pet_photo').addEventListener('change', function () {
-            preview.src = URL.createObjectURL(this.files[0])
-            preview.classList.remove('hidden')
-        });
 
+        document.getElementById('pet_photo_input').addEventListener('change', function () {
+            preview.src = URL.createObjectURL(this.files[0]);
+            preview.classList.remove('hidden');
+        });
     </script>
 {% endblock %}
 {% endblock %}

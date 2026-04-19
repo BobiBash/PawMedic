@@ -11,11 +11,40 @@
 {% endblock %}
 
 {% block image_field %}
-    {% if field.name == 'pet_photo' %}
-      <button id="id_pet_photo" type="button" onclick="document.getElementById('id_pet_photo').click()"
-              class="bg-white border rounded-sm p-1 w-60 cursor-pointer">
-          Change Image
-      </button>
-      <img id="preview" src="{% if pet_photo %} {{ pet.pet_photo.url }} {% endif %}" class="hidden w-40 h-40 mx-auto rounded-sm mt-2">
-    {% endif %}
+<div class="flex flex-col">
+    <label>Pet Photo:</label>
+    <input type="file" name="pet_photo" accept="image/*" id="pet_photo_input" class="hidden">
+    <button type="button" onclick="document.getElementById('pet_photo_input').click()"
+            class="bg-white border rounded-sm p-1 w-60 cursor-pointer">
+        Change Image
+    </button>
+    <img id="preview" src="" class="hidden w-40 h-40 mx-auto rounded-sm mt-2">
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+<script>
+function previewImage(input) {
+    const preview = document.getElementById('preview');
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = e => {
+            preview.src = e.target.result;
+            preview.classList.remove('hidden');
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+document.getElementById('pet_photo_input').addEventListener('change', function() {
+    previewImage(this);
+});
+
+{% if pet.pet_photo %}
+    const preview = document.getElementById('preview');
+    preview.src = '{{ pet.pet_photo.url }}';
+    preview.classList.remove('hidden');
+{% endif %}
+</script>
 {% endblock %}

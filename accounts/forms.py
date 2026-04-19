@@ -63,7 +63,7 @@ class VetProfileForm(forms.ModelForm):
 
     class Meta:
         model = VetProfile
-        fields = ("specialization", "years_of_experience", "bio", "photo")
+        fields = ("specialization", "years_of_experience", "bio")
 
         widgets = {
             "bio": forms.Textarea(

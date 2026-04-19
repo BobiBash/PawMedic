@@ -1,3 +1,4 @@
+from cloudinary.models import CloudinaryField
 from django.db import models
 
 from accounts.models import PawMedicUser
@@ -10,4 +11,4 @@ class Pet(models.Model):
     species = models.CharField(max_length=100)
     breed = models.CharField(max_length=100)
     date_of_birth = models.DateField(validators=[validate_date])
-    pet_photo = models.ImageField(upload_to="media/", null=True, blank=True)
+    pet_photo = CloudinaryField("pet_photos", null=True, blank=True)

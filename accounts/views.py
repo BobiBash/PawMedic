@@ -10,7 +10,7 @@ from django.views.generic import (
     CreateView,
     TemplateView, ListView,
 )
-
+import cloudinary.uploader
 from .choices import PawMedicUserType
 from .forms import RegistrationForm, LoginForm, VetProfileForm
 from .mixins import AnonymousRequiredMixin
@@ -83,6 +83,10 @@ class RegisterVetView(View):
 
             vet_profile = vet_form.save(commit=False)
             vet_profile.user = user
+            photo = request.FILES.get('photo')
+            if photo:
+                result = cloudinary.uploader.upload(photo)
+                vet_profile.photo = result['public_id']
             vet_profile.save()
 
             return redirect("confirm-vet")
@@ -155,8 +159,11 @@ class UpdateProfilePhotoView(LoginRequiredMixin, View):
 
     def post(self, request):
         vet = request.user.vet_profile
-        vet.photo = request.FILES.get('photo')
-        vet.save()
+        photo = request.FILES.get('photo')
+        if photo:
+            result = cloudinary.uploader.upload(photo)
+            vet.photo = result['public_id']
+            vet.save()
         return redirect('vet-profile')
 
 class UpdateProfileBioView(LoginRequiredMixin, View):
