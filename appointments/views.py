@@ -42,7 +42,7 @@ class VetScheduleView(PermissionRequiredMixin, LoginRequiredMixin, View):
 
 
         if form.is_valid():
-            vet_id = request.user.id
+            vet_id = request.user.vet_profile.id
             AppointmentSlot.objects.filter(vet_id=vet_id).delete()
             date = form.cleaned_data['selected_date']
             times = form.cleaned_data['available_slots']
