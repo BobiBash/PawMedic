@@ -73,4 +73,10 @@ jobs:
         with:
           app-name: 'PawMedic'
           slot-name: 'Production'
-          
+
+      - name: 'Deploy to Celery Worker'
+        uses: azure/webapps-deploy@v3
+        id: deploy-to-worker
+        with:
+          app-name: 'pawmedic-worker'
+          slot-name: 'Production'
