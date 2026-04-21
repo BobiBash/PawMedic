@@ -2,7 +2,7 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
-name: Build and deploy Python app to Azure Web App - PawMedic
+name: Build and deploy Python app to Azure Web App - PawMedic2
 
 on:
   push:
@@ -63,16 +63,17 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_852A549EB7F44BEE9B6383EB65B4A70D }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_2F22C6544A0A4AFDB5EB5DF37863D221 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_0E010B4B73584DF29BB91980BE885B29 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_FD79C845E1B84CB991A0A6E4D152AEB1 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_2D9B0BCFD60D4B95A01CD20DEA612AA5 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_ADD3DE4AAC7F40C6BD09FD7ABB60742D }}
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
-          app-name: 'PawMedic'
+          app-name: 'PawMedic2'
           slot-name: 'Production'
+          
 
       - name: 'Deploy to Celery Worker'
         uses: azure/webapps-deploy@v3
