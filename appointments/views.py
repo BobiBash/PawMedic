@@ -61,23 +61,14 @@ class UserMakeAppointMentView(PermissionRequiredMixin, LoginRequiredMixin, View)
     permission_required = "appointments.add_appointment"
 
     def post(self, request, slug):
+        owner_id = request.user.pk
         slot_id = request.POST.get("slot")
         pet_id = request.POST.get("pet")
-
         pet = get_object_or_404(Pet, pk=pet_id)
         if not pet.owner == request.user:
             return redirect("home")
 
-        slot = get_object_or_404(AppointmentSlot, pk=slot_id)
-
-        Appointment.objects.create(
-            slot_id=slot_id,
-            vet_id=slot.vet.user_id,
-            pet_id=pet_id,
-        )
-
-        slot.is_booked = True
-        slot.save()
+        Appointment.objects.create(vet_id=owner_id, slot_id=slot_id, pet_id=pet_id)
 
         return redirect("vets-list")
 
