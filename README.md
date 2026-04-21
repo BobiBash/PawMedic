@@ -4,7 +4,7 @@ A Django-based platform connecting pet owners with veterinarians. Pet owners can
 
 Built as a final project for the SoftUni Django Advanced course.
 
-🌐 **Live demo:** [pawmedic.azurewebsites.net](http://pawmedic-bpe4bwdba5gebvh5.swedencentral-01.azurewebsites.net)
+🌐 **Live demo:** [pawmedic.azurewebsites.net](http://pawmedic2-esauh0d9fzgyavat.swedencentral-01.azurewebsites.net)
 
 ---
 
