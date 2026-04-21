@@ -40,6 +40,8 @@ CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 
+CELERY_TASK_ALWAYS_EAGER = True
+
 CELERY_BEAT_SCHEDULE = {
     "clean-expired-appointments": {
         "task": "appointments.tasks.clean_expired_appointments",
