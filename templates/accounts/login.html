@@ -3,35 +3,61 @@
 
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'css/errorstyling.css' %}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+<style>
+    @media (prefers-reduced-motion: reduce) {
+        .login-reveal {
+            animation: none !important;
+        }
+    }
+</style>
 {% endblock %}
-{% block content %}
-<form method="post" novalidate class="container px-4 py-8">
-    <div class="flex flex-col justify-center items-center align-middle w-100 items-center gap-4 mx-auto bg-white p-12 rounded shadow">
-        <h1 class="text-2xl font-semibold mb-8">Sign in</h1>
-        {% csrf_token %}
-        <div class="mb-4 w-60">
-            <label class="text-lg">Username or Email</label>
-            <p class="border rounded-sm w-60 p-1">{{ form.username }}</p>
-            <p>{{ form.username.errors }}</p>
-        </div>
-        <div class="flex flex-col items-start mb-2 w-60">
-            <label class="text-lg">{{ form.password.label }}</label>
-            <div class="border rounded-sm w-60 p-1 flex justify-between">{{ form.password }}
-                <button id="LoginTogglePassword" type="button">
-                    <i id="pass-icon-login" class="fa-solid fa-eye"></i>
-                </button>
-            </div>
-            <p>{{ form.password.errors }}</p>
-        </div>
-        {% if form.non_field_errors %}
-            {{ form.non_field_errors }}
-        {% endif %}
 
-        <a href="{% url 'password-reset' %}">Forgot your password?</a>
-        <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Login</button>
-        <a href="{% url 'register' %}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Don't have an account?</a>
-    </div>
-</form>
+
+{% block content %}
+<div data-login-shell class="relative isolate w-full">
+
+    <form method="post" novalidate class="relative mx-auto w-full max-w-300 px-4 py-8">
+        <div class="login-reveal animate-fade-in flex w-full max-w-130 flex-col items-start rounded-2xl bg-white p-6 shadow-xl shadow-emerald-950/10 ring-1 ring-emerald-900/10 sm:p-8 lg:min-h-130 lg:p-12">
+            <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-emerald-700">Welcome back</p>
+            <h1 class="mt-1.5 text-3xl font-extrabold tracking-tight text-emerald-950 sm:text-4xl">Sign in</h1>
+
+            {% csrf_token %}
+            <div class="mt-8 flex w-full flex-col gap-5">
+                <div class="w-full">
+                    <label for="{{ form.username.id_for_label }}" class="mb-1.5 block text-sm font-semibold text-emerald-900">Username or Email</label>
+                    {{ form.username }}
+                    {{ form.username.errors }}
+                </div>
+                <div class="w-full">
+                    <label for="{{ form.password.id_for_label }}" class="mb-1.5 block text-sm font-semibold text-emerald-900">{{ form.password.label }}</label>
+                    <div class="relative">
+                        {{ form.password }}
+                        <button id="LoginTogglePassword" type="button" aria-label="Show or hide password" class="absolute inset-y-0 right-0 flex w-11 items-center justify-center rounded-r-lg text-emerald-700 transition hover:text-emerald-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700">
+                            <i id="pass-icon-login" class="fa-solid fa-eye text-sm" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    {{ form.password.errors }}
+                </div>
+            </div>
+
+            {% if form.non_field_errors %}
+                <div class="mt-5 w-full">{{ form.non_field_errors }}</div>
+            {% endif %}
+
+            <button type="submit" class="mt-7 w-full rounded-lg bg-emerald-900 px-4 py-3 text-base font-bold text-white shadow-lg shadow-emerald-900/25 transition hover:bg-emerald-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-900">Login</button>
+            <a href="{% url 'password-reset' %}" class="mt-2 rounded-sm text-sm font-semibold text-emerald-800 underline-offset-4 transition hover:text-emerald-950 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700">Forgot your password?</a>
+            <a href="{% url 'register' %}" class="mt-6 flex w-full items-center justify-center rounded-lg border border-emerald-300 bg-emerald-50/60 px-4 py-3 text-sm font-semibold text-emerald-900 transition hover:border-emerald-400 hover:bg-emerald-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700">Don't have an account?</a>
+        </div>
+
+        <div class="login-reveal animate-fade-in pointer-events-none absolute left-[600px] top-1/2 hidden w-80 -translate-y-1/2 xl:block" style="animation-delay: 120ms; animation-fill-mode: backwards;">
+            <div class="relative">
+                <i aria-hidden="true" data-login-paw class="fas fa-paw relative inline-block -rotate-12 text-[9rem] leading-none text-lime-600 drop-shadow-[0_16px_30px_rgba(6,78,59,0.15)]"></i>
+            </div>
+            <p class="mt-4 text-4xl font-extrabold tracking-tight text-emerald-950">PawMedic</p>
+            <p class="mt-2 max-w-70 text-sm leading-relaxed text-emerald-800/80">Your trusted veterinary care platform</p>
+            <span aria-hidden="true" class="mt-5 block h-1 w-12 rounded-full bg-lime-600/70"></span>
+        </div>
+    </form>
+</div>
 <script src="{% static 'password_eye.js' %}"></script>
 {% endblock %}

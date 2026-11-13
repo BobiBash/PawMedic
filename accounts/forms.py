@@ -86,8 +86,21 @@ class LoginForm(AuthenticationForm):
 
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
-        for field in self.fields:
-            self.fields[field].widget.attrs["class"] = "outline-none"
+
+        input_classes = (
+            "w-full rounded-lg border border-emerald-300 bg-emerald-50/40 px-3.5 py-2.5 "
+            "text-base text-emerald-950 placeholder:text-emerald-900/40 outline-none "
+            "focus:border-emerald-700 focus:bg-white focus:ring-2 focus:ring-emerald-700/20"
+        )
+        self.fields["username"].widget.attrs.update(
+            {"class": input_classes, "autocomplete": "username"}
+        )
+        self.fields["password"].widget.attrs.update(
+            {
+                "class": f"{input_classes} pr-11",
+                "autocomplete": "current-password",
+            }
+        )
 
         self.fields["username"].error_messages = {
             "required": "Please enter your username or email.",

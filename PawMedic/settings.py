@@ -202,3 +202,13 @@ USE_I18N = True
 
 STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
+
+# Tailwind CLI workaround: v4.3.5's bundled lightningcss fails to load here
+# (ERR_DLOPEN_FAILED), and even a 4.2.3 binary kept inside the project folder
+# fails; the same binary under LOCALAPPDATA builds fine. Pin the version so
+# django-tailwind-cli does not download "latest" (4.3.5) again.
+TAILWIND_CLI_VERSION = "4.2.3"
+TAILWIND_CLI_PATH = os.getenv(
+    "TAILWIND_CLI_PATH",
+    str(Path(os.getenv("LOCALAPPDATA", BASE_DIR)) / "PawMedic" / "tailwindcss.exe"),
+)
