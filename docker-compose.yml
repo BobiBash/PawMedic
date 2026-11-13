@@ -1,0 +1,76 @@
+name: pawmedic
+
+x-app: &app
+  build: .
+  env_file:
+    - path: .env
+      required: false 
+  environment:
+    DB_HOST: db
+    DB_PORT: "5432"
+    REDIS_URL: redis://redis:6379/0
+  depends_on:
+    db:
+      condition: service_healthy
+    redis:
+      condition: service_started
+  init: true
+
+services:
+  web:
+    <<: *app
+    environment:
+      DB_HOST: db
+      DB_PORT: "5432"
+      REDIS_URL: redis://redis:6379/0
+      RUN_MIGRATIONS: "1"
+      RUN_COLLECTSTATIC: "1"
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import socket; socket.create_connection(('127.0.0.1', 8000), 2)",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME:-pawmedic_db}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+    ports:
+      - "${DB_HOST_PORT:-5434}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  worker:
+    <<: *app
+    command: celery -A PawMedic worker --loglevel=info
+
+  beat:
+    <<: *app
+    command: celery -A PawMedic beat --loglevel=info
+
+volumes:
+  postgres_data:

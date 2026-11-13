@@ -21,27 +21,27 @@
 </head>
 <body class="flex flex-col bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen font-nunito">
     <div class="sticky top-0 z-50">
-        <nav class="flex flex-col md:flex-row items-center justify-between bg-gradient-to-r from-green-500 to-emerald-600 px-4 py-4 md:px-8 shadow-xl">
+        <nav class="flex flex-col md:flex-row items-center justify-between bg-gradient-to-r from-emerald-900 via-emerald-800 to-green-900 px-4 py-4 md:px-8 shadow-xl">
             <div class="flex items-center space-x-2 mb-4 md:mb-0">
                 <i class="fas fa-paw text-white text-2xl"></i>
                 <a href="{% url 'home' %}" class="text-white text-2xl font-bold tracking-tight hover:text-gray-100 transition-colors duration-200">PawMedic</a>
             </div>
             
             <div class="flex flex-wrap justify-center gap-4 md:gap-6 text-white font-medium">
-                <a href="{% url 'home' %}" class="hover:text-gray-100 transition-colors duration-200 px-3 py-1 rounded-lg hover:bg-white/10">Home</a>
-                <a href="{% url 'about' %}" class="hover:text-gray-100 transition-colors duration-200 px-3 py-1 rounded-lg hover:bg-white/10">About</a>
-                <a href="{% url 'vets-list' %}" class="hover:text-gray-100 transition-colors duration-200 px-3 py-1 rounded-lg hover:bg-white/10">Veterinarians</a>
-                <a href="{% url 'pets' %}" class="hover:text-gray-100 transition-colors duration-200 px-3 py-1 rounded-lg hover:bg-white/10">My Pets</a>
-                <a href="{% url 'forum-posts-list' %}" class="hover:text-gray-100 transition-colors duration-200 px-3 py-1 rounded-lg hover:bg-white/10">Forum</a>
-                <a href="https://github.com/BobiBash" target="_blank" class="hover:text-gray-100 transition-colors duration-200 px-3 py-1 rounded-lg hover:bg-white/10">
+                <a href="{% url 'home' %}" class="hover:bg-white/15 hover:text-white active:bg-white/20 transition-colors duration-200 px-3 py-1 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-300">Home</a>
+                <a href="{% url 'about' %}" class="hover:bg-white/15 hover:text-white active:bg-white/20 transition-colors duration-200 px-3 py-1 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-300">About</a>
+                <a href="{% url 'vets-list' %}" class="hover:bg-white/15 hover:text-white active:bg-white/20 transition-colors duration-200 px-3 py-1 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-300">Veterinarians</a>
+                <a href="{% url 'pets' %}" class="hover:bg-white/15 hover:text-white active:bg-white/20 transition-colors duration-200 px-3 py-1 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-300">My Pets</a>
+                <a href="{% url 'forum-posts-list' %}" class="hover:bg-white/15 hover:text-white active:bg-white/20 transition-colors duration-200 px-3 py-1 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-300">Forum</a>
+                <a href="https://github.com/BobiBash" target="_blank" class="hover:bg-white/15 hover:text-white active:bg-white/20 transition-colors duration-200 px-3 py-1 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-300">
                     <i class="fab fa-github"></i> GitHub
                 </a>
             </div>
             
             <div class="flex items-center gap-4 mt-4 md:mt-0">
                 {% if not user.is_authenticated %}
-                    <a href="{% url 'login' %}" class="text-white hover:text-gray-100 transition-colors duration-200 px-4 py-2 rounded-lg hover:bg-white/10">Sign in</a>
-                    <a href="{% url 'register' %}" class="bg-white text-emerald-600 hover:bg-gray-100 transition-colors duration-200 px-4 py-2 rounded-lg font-semibold shadow-md hover:shadow-lg">Sign up</a>
+                    <a href="{% url 'login' %}" class="text-white hover:bg-white/15 hover:text-white active:bg-white/20 transition-colors duration-200 px-4 py-2 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-300">Sign in</a>
+                    <a href="{% url 'register' %}" class="bg-white text-emerald-900 hover:bg-emerald-50 active:bg-emerald-100 transition-colors duration-200 px-4 py-2 rounded-lg font-semibold shadow-md hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-300">Sign up</a>
                 {% else %}
                     <div class="relative group">
                         <button class="flex items-center w-42 gap-2 text-white hover:text-gray-100 transition-colors duration-200 px-4 py-2 rounded-lg hover:bg-white/10">
@@ -92,48 +92,65 @@
         {% endblock %}
     </main>
 
-    <footer class="bg-gray-900 text-gray-400 mt-12 py-2 flex flex-col">
-        <div class="container mx-auto px-6 w-5xl ">
-            <div class="w-xl flex mx-auto justify-center">
+    <footer class="mt-12 border-t border-emerald-800/60 bg-gradient-to-b from-emerald-950 to-green-950 text-emerald-100">
+        <div class="mx-auto grid w-full max-w-5xl gap-8 px-6 py-10 md:grid-cols-3 md:gap-8 md:py-12">
 
-                <!-- Brand -->
-                <div class="w-50">
-                    <div class="flex items-center space-x-2 mb-2">
-                        <i class="fas fa-paw text-emerald-400"></i>
-                        <span class="text-white font-bold">PawMedic</span>
-                    </div>
-                    <p class="text-sm text-gray-500">Connecting pet owners with trusted veterinarians.</p>
-                    <div class="flex space-x-3 mt-3">
-                        <a href="https://github.com/BobiBash" target="_blank" class="hover:text-white transition-colors duration-200"><i class="fab fa-github"></i></a>
-                    </div>
+            <!-- Brand -->
+            <div class="max-w-xs">
+                <div class="flex items-center gap-2.5">
+                    <span class="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-800/80 ring-1 ring-emerald-700/80">
+                        <i class="fas fa-paw text-lime-300" aria-hidden="true"></i>
+                    </span>
+                    <span class="text-lg font-bold tracking-tight text-white">PawMedic</span>
                 </div>
-
-                <!-- Quick Links -->
-                <div class="w-50">
-                    <h4 class="text-sm font-semibold justify-center flex text-emerald-400 mb-2">Quick Links</h4>
-                    <ul class="flex flex-col text-sm justify-center">
-                        <li><a href="{% url 'home' %}" class="hover:text-white transition-colors duration-200">Home</a></li
-                        <li><a href="{% url 'about' %}" class="hover:text-white transition-colors duration-200">About</a></li
-                        <li><a href="{% url 'vets-list' %}" class="hover:text-white transition-colors duration-200">Veterinarians</a></li
-                        <li><a href="{% url 'forum-posts-list' %}" class="hover:text-white transition-colors duration-200">Forum</a></li
-                    </ul>
-                </div>
-
-                <!-- Support -->
-                <div class="w-50">
-                    <h4 class="text-sm font-semibold flex justify-center text-emerald-400 mb-2">Support</h4>
-                    <ul class="text-sm">
-                        {% if perms.common.view_reportedissues %}
-                            <li><a href="{% url 'reported-issues-list' %}" class="hover:text-white transition-colors duration-200 text-lg font-semibold">View issues - moderators only</a></li>
-                        {% endif %}
-                        <li><a href="{% url 'report-issue' %}" class="hover:text-white transition-colors duration-200">Report an Issue</a></li>
-                    </ul>
-                </div>
-
+                <p class="mt-4 text-sm leading-relaxed text-emerald-100/70">Connecting pet owners with trusted veterinarians.</p>
+                <a href="https://github.com/BobiBash" target="_blank" rel="noopener noreferrer" aria-label="PawMedic on GitHub" class="mt-5 inline-flex h-11 w-11 items-center justify-center rounded-full border border-emerald-700 bg-emerald-900/60 text-emerald-200 transition-colors duration-200 hover:border-lime-300 hover:text-lime-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-300">
+                    <i class="fab fa-github text-lg" aria-hidden="true"></i>
+                </a>
             </div>
+
+            <!-- Quick Links -->
+            <nav aria-label="Footer quick links">
+                <h2 class="text-xs font-semibold uppercase tracking-wider text-emerald-300">Quick Links</h2>
+                <ul class="mt-4 space-y-1 text-sm">
+                    <li>
+                        <a href="{% url 'home' %}" class="inline-flex min-h-11 items-center rounded-lg px-2 -ml-2 text-emerald-100/80 transition-colors duration-200 hover:bg-white/5 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-300">Home</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'about' %}" class="inline-flex min-h-11 items-center rounded-lg px-2 -ml-2 text-emerald-100/80 transition-colors duration-200 hover:bg-white/5 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-300">About</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'vets-list' %}" class="inline-flex min-h-11 items-center rounded-lg px-2 -ml-2 text-emerald-100/80 transition-colors duration-200 hover:bg-white/5 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-300">Veterinarians</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'forum-posts-list' %}" class="inline-flex min-h-11 items-center rounded-lg px-2 -ml-2 text-emerald-100/80 transition-colors duration-200 hover:bg-white/5 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-300">Forum</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Support -->
+            <div>
+                <h2 class="text-xs font-semibold uppercase tracking-wider text-emerald-300">Support</h2>
+                <div class="mt-4 flex flex-col items-start gap-3">
+                    <a href="{% url 'report-issue' %}" class="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-lime-300/70 bg-lime-300/10 px-4 py-2.5 text-sm font-semibold text-lime-100 transition-colors duration-200 hover:border-lime-200 hover:bg-lime-300/20 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-300">
+                        <i class="fas fa-circle-exclamation text-lime-300" aria-hidden="true"></i>
+                        Report an Issue
+                    </a>
+                    {% if perms.common.view_reportedissues %}
+                        <a href="{% url 'reported-issues-list' %}" class="inline-flex items-center gap-2 rounded-lg border border-emerald-700 bg-emerald-900/60 px-3 py-2 text-xs font-medium text-emerald-100 transition-colors duration-200 hover:border-emerald-500 hover:bg-emerald-900 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-300">
+                            <i class="fas fa-shield-halved text-emerald-300" aria-hidden="true"></i>
+                            <span>View issues</span>
+                            <span class="rounded-full bg-emerald-800 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-emerald-200">Moderator</span>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+
         </div>
-        <div class="border-t border-gray-800 mt-2 p-4 text-center text-xs text-gray-600">
-            © 2026 PawMedic — Made with <i class="fas fa-heart text-red-400"></i> for pet lovers
+        <div class="border-t border-emerald-800/60">
+            <div class="mx-auto w-full max-w-5xl px-6 py-4 text-center text-xs text-emerald-200/60">
+                © 2026 PawMedic — Made with <span class="sr-only">love</span><i class="fas fa-heart text-lime-300" aria-hidden="true"></i> for pet lovers
+            </div>
         </div>
     </footer>
 
